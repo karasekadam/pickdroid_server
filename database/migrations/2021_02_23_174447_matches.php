@@ -36,7 +36,8 @@ class Matches extends Migration
             $table->float("nsxg2")->nullable();
             $table->float("adj_score1")->nullable();
             $table->float("adj_score2")->nullable();
-            $table->integer("priority")->default(10)->nullable(); // remove nullable
+            $table->integer("priority")->default(10);
+            $table->string("country")->nullable();
             //$table->timestamps();    return after testing
             //$table->id()->unique();
         });
