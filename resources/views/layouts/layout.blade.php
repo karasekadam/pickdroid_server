@@ -80,7 +80,7 @@
                         <p class="h3 font-weight-light text-md-left" style="color: #FF8000; margin-bottom: 10%">Leagues</p>
                         @foreach($leagues as $league)
                             <p class="text-md-center font-weight-light sidefont">
-                                <a href="/?league={{$league->league}}">{{$league->league}}</a>
+                                <a href="/?league={{$league->league}}" style="color: white; text-decoration: none">{{$league->league}}</a>
                             </p>
                         @endforeach
                     </div>
@@ -88,7 +88,7 @@
                     <div id="countries">
                         <p class="h3 font-weight-light text-md-left" style="color: #FF8000">Countries</p>
                             <p class="text-md-center font-weight-light sidefont">
-                                <a href="#">...</a>
+                                <a href="#" style="color: white; text-decoration: none">...</a>
                             </p>
                     </div>
                 </div>
