@@ -1,0 +1,11 @@
+@extends("layouts.layout")
+@section("content")
+    <div>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Cras adipiscing enim eu turpis egestas. Quis varius quam quisque id diam vel quam. Nisl purus in mollis nunc sed id semper risus in. In hac habitasse platea dictumst vestibulum. Purus in massa tempor nec feugiat nisl. Pulvinar mattis nunc sed blandit libero volutpat sed cras. Tempor commodo ullamcorper a lacus vestibulum sed arcu non. Quis lectus nulla at volutpat diam ut. Amet tellus cras adipiscing enim. Sit amet mattis vulputate enim nulla. Ut etiam sit amet nisl purus in. Tempus iaculis urna id volutpat lacus laoreet non curabitur gravida.</p>
+        <br>
+        <p>Vestibulum morbi blandit cursus risus. Dui nunc mattis enim ut tellus elementum sagittis vitae. Hac habitasse platea dictumst vestibulum rhoncus est pellentesque elit ullamcorper. Aenean pharetra magna ac placerat vestibulum lectus. Pellentesque diam volutpat commodo sed egestas egestas fringilla phasellus faucibus. Arcu odio ut sem nulla pharetra. Auctor neque vitae tempus quam pellentesque nec. Odio tempor orci dapibus ultrices in iaculis nunc. Sit amet nulla facilisi morbi. Morbi tincidunt ornare massa eget. Elit duis tristique sollicitudin nibh sit amet commodo. Eros donec ac odio tempor orci. Eros donec ac odio tempor. Lorem ipsum dolor sit amet consectetur adipiscing elit. Sem integer vitae justo eget magna. Volutpat consequat mauris nunc congue nisi vitae suscipit tellus. Elit scelerisque mauris pellentesque pulvinar.</p>
+        <br>
+        <p>Posuere ac ut consequat semper. Eu sem integer vitae justo eget magna fermentum. Sed id semper risus in hendrerit gravida rutrum quisque. Neque laoreet suspendisse interdum consectetur libero id faucibus nisl tincidunt. Iaculis urna id volutpat lacus laoreet non curabitur gravida arcu. Amet consectetur adipiscing elit duis tristique sollicitudin nibh sit. At urna condimentum mattis pellentesque id nibh tortor id aliquet. At imperdiet dui accumsan sit amet. Eget mauris pharetra et ultrices neque ornare aenean euismod. Ut consequat semper viverra nam libero justo laoreet sit amet.</p>
+        <br>
+    </div>
+@endsection
