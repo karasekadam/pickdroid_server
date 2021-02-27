@@ -80,7 +80,7 @@
                         <p class="h3 font-weight-light text-md-left" style="color: #FF8000; margin-bottom: 10%">Leagues</p>
                         @foreach($leagues as $league)
                             <p class="text-md-center font-weight-light sidefont">
-                                <a href="/?league={{$league->league}}" style="color: white; text-decoration: none">{{$league->league}}</a>
+                                <a href="/?league={{$league->league}}" style="color: white; text-decoration: none" onmouseover="this.style.color=#D8D8D8">{{$league->league}}</a>
                             </p>
                         @endforeach
                     </div>
