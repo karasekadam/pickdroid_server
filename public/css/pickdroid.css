@@ -6,6 +6,11 @@ td {
     white-space: nowrap;
 }
 
+thead th {
+    position: sticky;
+    top: 0;
+}
+
 a#log {
     color:black;
     text-decoration: none
