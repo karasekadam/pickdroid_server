@@ -1,18 +1,18 @@
 @extends("layouts.layout")
     @section("content")
 
-    <script>
+    <!--<script>
         $(document).ready(function() {
         document.getElementById("wrap").addEventListener("scroll", function(){
        var translate = "translate(0,"+this.scrollTop+"px)";
        this.querySelector("thead").style.transform = translate;
         });
      })
-    </script>
+    </script>-->
 
         <div class="overflow-auto" id="wrap" style="height: 90vh">
             <table class="table">
-                <thead class="thead-light" >
+                <thead class="thead-light">
                     <tr>
                         <th class="date align-middle"><p class="font-weight-light h4">Datum</p></th>
                         <th class="match align-middle"><p class="font-weight-light h4">Zápas</p></th>
