@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Matches;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Hash;
 
 class mainControl extends Controller
 {
@@ -14,11 +17,21 @@ class mainControl extends Controller
         ]);
 
         $user = User::where("email", $data->email)->get();
-        if (!$user->first() or $user->first()->password != $data->password) {
+        if (!$user->first() or !(Hash::check($data->password, $user->first()->password))) {
         	return redirect()->route("login");
         }
 
-        return redirect()->route("main");
+
+        $sport = request("sport");   //nešlo mi to použít jako parametr místo Matches, tak buď na to přijdu, nebo tam budou ify, když nebude moc sportů
+        $league = request("league");
+        if ($league) {
+            $matches = Matches::where("league", $league)->where("date", ">=", Carbon::now())->orderBy("priority", "asc")->orderBy("date", "asc")->get();
+        }
+        else {
+            $matches = Matches::where("date", ">=", Carbon::now())->orderBy("priority", "asc")->orderBy("date", "asc")->take(30)->get();
+        }
+        $leagues = Matches::where("date", ">=", Carbon::now())->select("league")->distinct()->take(4)->get();
+        return redirect()->route("home", ["matches"=>$matches, "leagues"=>$leagues]);
     }
 
     public function check_reg(Request $data) {
@@ -36,10 +49,13 @@ class mainControl extends Controller
 
         $user = new User();
         $user->name = $data->name;
-        $user->password = $data->password;
         $user->email = $data->email;
+        $user->fill([
+            'password' => Hash::make($data->password)
+        ])->save();
         $user->save();
-        return view("success_reg");
+        $leagues = Matches::where("date", ">=", Carbon::now())->select("league")->distinct()->take(4)->get();
+        return view('success_reg', ["leagues"=>$leagues]);
     }
 
 }

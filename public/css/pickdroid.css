@@ -2,13 +2,8 @@ table {
     line-height: 4em
 }
 
-thead th {
-    position: sticky;
-    top: 0;
-}
-
 td {
-    white-space: nowrap;  /** added **/
+    white-space: nowrap;
 }
 
 a#log {
@@ -23,6 +18,21 @@ a#log {
 
 .topbar {
     background-color: #FF8000;
+}
+
+.sidefont > a, .sidefont > p {
+    text-decoration: none !important; 
+    color: white !important
+}
+
+.sidefont:hover {
+    background-color: #D8D8D8;
+    cursor: pointer;
+    
+}
+
+.sidefont:hover p {
+    color: #424242 !important;
 }
 
 #menu {
@@ -46,9 +56,36 @@ a#log {
     width: 5em;
 }
 
-.logo {
+#robot2 {
+    margin-left: 20%;
+}
+
+.logo1, .logo2 {
     width: 20px;
     height: 20px;
-    margin-left: 10px;
+}
+
+.logo1 {
     margin-right: 10px;
+}
+
+.logo2 {
+    margin-left: 10px;
+}
+
+@media screen and (max-width : 576px)
+{
+
+table {
+    line-height: 2em
+}
+
+td {
+    font-size: 70%;
+}
+
+.h4 {
+    font-size: 1.3em;
+}
+
 }
