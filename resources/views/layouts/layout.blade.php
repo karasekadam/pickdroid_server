@@ -35,7 +35,7 @@
         </script>
 
         <div class="container-fluid">
-            <div class="row" style="height: 10vh">
+            <div class="row" id="topbar_row">
                 <div class="col-md-2 col-12 sidebar text-md-center">
                     <div class="d-none d-sm-none d-md-block">
                             <a href="/">
@@ -83,8 +83,8 @@
 
             <div class="row" style="height: 90vh">
                 <div class="col-md-2 d-md-block sidebar overflow-auto" id="menu" style="padding: 0px">
-                    <div id="leagues" style="margin-top: 20%">
-                        <p class="h3 font-weight-light text-md-left" style="color: #FF8000; margin-bottom: 5%; margin-left: 5%">Leagues</p>
+                    <div id="leagues" class="mt-md-4">
+                        <p class="h3 font-weight-light text-md-left" style="color: #FF8000; margin-bottom: 5%; margin-left: 2%">Top leagues</p>
                         @foreach($leagues as $league)
                         <div class="sidefont">
                             <a href="/?league={{$league->name_538}}">

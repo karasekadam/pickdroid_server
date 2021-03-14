@@ -6,68 +6,54 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Models\Leagues;
 use App\Models\Matches;
+use App\Models\Other_values;
+use App\Http\Controllers\General;
 
 class MatchController extends Controller
 {
 
+    public function __construct() {
+        $this->general = new General();
+    }
+
     public function home() {
-        /* vkládání lig do tabulky
-        $ligy = Matches::select("league")->get();
-        foreach ($ligy as $liga) {
-            $check = Leagues::where("name_538", $liga->league)->get();
-            if (!($check->first())) {
-
-                $league = new Leagues();
-                $league->sport = "Football";
-                $league->country = "Default";
-                $league->name_538 = $liga->league;
-                $league->name_fortuna = "-";
-                $league->save();
-
-            }
-
-        }*/
-
-
-        /*$sport = request("sport");   //nešlo mi to použít jako parametr místo Matches, tak buď na to přijdu, nebo tam budou ify, když nebude moc sportů
-        $league = request("league");
-        if ($league) {
-            $matches = Matches::where("league", $league)->where("date", ">=", Carbon::now())->orderBy("priority", "asc")->orderBy("date", "asc")->get();
-        }
-        else {
-            $matches = Matches::where("date", ">=", Carbon::now())->orderBy("priority", "asc")->orderBy("date", "asc")->take(30)->get();
-        }
-        $leagues = Leagues::select("name_538")->take(5)->get();
-        $countries = Leagues::select("country", "name_538")->distinct()->get();
-        return view('home', ["matches"=>$matches, "main_leagues"=>$leagues, "countries"=>$countries]);*/
-
-        $sport = request("sport");   //nešlo mi to použít jako parametr místo Matches, tak buď na to přijdu, nebo tam budou ify, když nebude moc sportů
-        $league = request("league");
-        if ($league) {
-            $matches = Matches::where("league", $league)->where("date", ">=", Carbon::now())->orderBy("priority", "asc")->orderBy("date", "asc")->get();
-        }
-        else {
-            $matches = Matches::where("date", ">=", Carbon::now())->orderBy("priority", "asc")->orderBy("date", "asc")->take(30)->get();
-        }
-        $leagues = Leagues::select("country", "name_538")->take(6)->get();
-        $countries = Leagues::select("country")->distinct()->get();
+        $matches = $this->general->getMatches();
+        $leagues = $this->general->getLeagues();
+        $countries = $this->general->getCountries();
         return view('home', ["matches"=>$matches, "leagues"=>$leagues, "countries"=>$countries]);
     }
 
-
     public function login() {
-        $leagues = Matches::where("date", ">=", Carbon::now())->select("league")->distinct()->take(4)->get();
-        return view('login', ["leagues"=>$leagues]);
+        $leagues = $this->general->getLeagues();
+        $countries = $this->general->getCountries();
+        return view('login', ["leagues"=>$leagues, "countries"=>$countries]);
     }
+
     public function blog() {
-        $leagues = Matches::where("date", ">=", Carbon::now())->select("league")->distinct()->take(4)->get();
-        return view('blog', ["leagues"=>$leagues]);
+        $leagues = $this->general->getLeagues();
+        $countries = $this->general->getCountries();
+        $content = $this->general->getOther();
+        return view('blog', ["leagues"=>$leagues, "countries"=>$countries, "content"=>$content]);
     }
+
     public function aboutus() {
-        $leagues = Matches::where("date", ">=", Carbon::now())->select("league")->distinct()->take(4)->get();
-        return view('aboutus', ["leagues"=>$leagues]);
+        $leagues = $this->general->getLeagues();
+        $countries = $this->general->getCountries();
+        return view('aboutus', ["leagues"=>$leagues, "countries"=>$countries]);
     }
-    public function welcome() {
-        return view('welcome');
+
+    public function adm_blog() {
+        $leagues = $this->general->getLeagues();
+        $countries = $this->general->getCountries();
+        $content = $this->general->getOther();
+        return view('adm_blog', ["leagues"=>$leagues, "countries"=>$countries, "content"=>$content]);
     }
+
+    public function adm_matches() {
+        $matches = Matches::where("date", ">=", Carbon::now())->orderBy("priority", "asc")->orderBy("date", "asc")->take(30)->get();
+        $leagues = $this->general->getLeagues();
+        $countries = $this->general->getCountries();
+        return view('adm_matches', ["leagues"=>$leagues, "countries"=>$countries, "matches"=>$matches]);
+    }
+
 }

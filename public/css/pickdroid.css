@@ -1,5 +1,5 @@
 table {
-    line-height: 4em
+    line-height: 3em
 }
 
 td {
@@ -39,6 +39,10 @@ a#log {
     display: none;
 }
 
+#topbar_row {
+    height: 10vh;
+}
+
 .topbar > a {
    color: white; 
 }
@@ -60,32 +64,43 @@ a#log {
     margin-left: 20%;
 }
 
-.logo1, .logo2 {
-    width: 20px;
-    height: 20px;
+.mob_logo, .web_logo {
+    width: 20px; 
+    height: 20px; 
 }
 
-.logo1 {
-    margin-right: 10px;
+.web_logo {
+    margin-right: 2%;
+    margin-left: 1%;
 }
 
-.logo2 {
-    margin-left: 10px;
+.mob_logo {
+    margin-right: 3%;
 }
+
 
 @media screen and (max-width : 576px)
 {
 
-table {
-    line-height: 2em
+    table {
+        line-height: 2em
+    }
+
+    td {
+        font-size: 70%;
+    }
+
+    .h4 {
+        font-size: 1.3em;
+    }
+
 }
 
-td {
-    font-size: 70%;
-}
+@media screen and (max-height: 600px)
+{
 
-.h4 {
-    font-size: 1.3em;
-}
+    #topbar_row {
+        height: 13vh;
+    }
 
 }

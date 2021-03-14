@@ -5,11 +5,20 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Matches;
+use App\Models\Leagues;
+use App\Models\Other_values;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Controllers\General;
 
 class mainControl extends Controller
 {
+
+    public function __construct() {
+        $this->general = new General();
+    }
+
+
     public function check_login(Request $data) {
     	$this->validate($data, [
             "email"=>"required",
@@ -22,19 +31,15 @@ class mainControl extends Controller
         }
 
 
-        $sport = request("sport");   //nešlo mi to použít jako parametr místo Matches, tak buď na to přijdu, nebo tam budou ify, když nebude moc sportů
-        $league = request("league");
-        if ($league) {
-            $matches = Matches::where("league", $league)->where("date", ">=", Carbon::now())->orderBy("priority", "asc")->orderBy("date", "asc")->get();
-        }
-        else {
-            $matches = Matches::where("date", ">=", Carbon::now())->orderBy("priority", "asc")->orderBy("date", "asc")->take(30)->get();
-        }
-        $leagues = Matches::where("date", ">=", Carbon::now())->select("league")->distinct()->take(4)->get();
-        return redirect()->route("home", ["matches"=>$matches, "leagues"=>$leagues]);
+        $matches = $this->general->getMatches();
+        $leagues = $this->general->getLeagues();
+        $countries = $this->general->getCountries();
+        return redirect()->route("home", ["matches"=>$matches, "leagues"=>$leagues, "countries"=>$countries]);
     }
 
     public function check_reg(Request $data) {
+
+
     	$this->validate($data, [
             "name"=>"required",
             "password"=>"required"
@@ -54,8 +59,24 @@ class mainControl extends Controller
             'password' => Hash::make($data->password)
         ])->save();
         $user->save();
-        $leagues = Matches::where("date", ">=", Carbon::now())->select("league")->distinct()->take(4)->get();
-        return view('success_reg', ["leagues"=>$leagues]);
+        
+        $leagues = $this->general->getLeagues();
+        $countries = $this->general->getCountries();
+        return view('success_reg', ["leagues"=>$leagues, "countries"=>$countries]);
+    }
+
+    public function update_other(Request $data) {
+        $field = $data->edit_hidden;
+
+        $others = Other_values::select("blog", "about_us")->update([$field=>$data->edit_area]);
+
+        $leagues = $this->general->getLeagues();
+        $countries = $this->general->getCountries();
+        return redirect()->route('adm_blog', ["leagues"=>$leagues, "countries"=>$countries]);
+    }
+
+    public function update_match(Request $data) {
+        return $data;
     }
 
 }
