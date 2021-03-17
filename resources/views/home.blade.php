@@ -2,7 +2,7 @@
     @section("content")
 
     <script>
-        
+
         $(document).ready(function() {
 
             document.getElementById("wrap").addEventListener("scroll", function(){
@@ -43,9 +43,9 @@
 
                         <td class="league d-none d-md-table-cell align-middle"><img src="img/logo.png" class="web_logo ml-2" alt="logo ligy"></td>
 
-                        <td class="rate text-center align-middle"><b>{{$match->spi1}}<br>1.11</b></td>
-                        <td class="rate text-center align-middle"><b>{{$match->spi2}}<br>1.11</b></td>
                         <td class="rate text-center align-middle"><b>{{$match->prob1}}<br>1.11</b></td>
+                        <td class="rate text-center align-middle"><b>{{$match->probtie}}<br>1.11</b></td>
+                        <td class="rate text-center align-middle"><b>{{$match->prob2}}<br>1.11</b></td>
                     </tr>
                 @endforeach
                 </tbody>

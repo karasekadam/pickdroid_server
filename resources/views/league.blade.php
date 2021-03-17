@@ -16,9 +16,9 @@
                     <td class="date">{{$match->date}}</td>
                     <td class="match"><img src="img/logo.png" class="logo" alt="logo týmu">{{$match->team1}} - {{$match->team2}}<img src="img/logo.png" class="logo" alt="logo týmu"></td>
                     <td class="league">{{$match->league}}</td>
-                    <td class="rate">{{$match->spi1}}</td>
-                    <td class="rate">{{$match->spi2}}</td>
                     <td class="rate">{{$match->prob1}}</td>
+                    <td class="rate">{{$match->probtie}}</td>
+                    <td class="rate">{{$match->prob2}}</td>
                 </tr>
             @endforeach
         </table>
