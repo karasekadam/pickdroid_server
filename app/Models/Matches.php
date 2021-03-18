@@ -9,4 +9,5 @@ use Laravel\Scout\Searchable;
 class Matches extends Model
 {
     protected $table = "matches";
+    public $timestamps = false;
 }

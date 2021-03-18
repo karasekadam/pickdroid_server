@@ -1,5 +1,5 @@
 table {
-    line-height: 3em
+    line-height: 1.3em
 }
 
 td {
@@ -78,20 +78,27 @@ a#log {
     margin-right: 3%;
 }
 
+.no_pad {
+    padding: 0px;
+}
+
+.ok {
+    display: none;
+}
 
 @media screen and (max-width : 576px)
 {
 
     table {
-        line-height: 2em
+        line-height: 1.3em
     }
 
     td {
         font-size: 70%;
     }
 
-    .h4 {
-        font-size: 1.3em;
+    thead .h4 {
+        font-size: 1em;
     }
 
 }

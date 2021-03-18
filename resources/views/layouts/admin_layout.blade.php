@@ -31,6 +31,14 @@
                     $(".sub_"+value).slideToggle();
                 });
 
+                $("#add_match").click(function() {
+                    $("#new_match").show();
+                    $("#add_done").show();
+                });
+
+                $("#add_done").click(function() {
+                    $("#form_new_match").submit();
+                });
             });
         </script>
 
@@ -62,7 +70,11 @@
 
                 <div class="col-md-10 d-none d-sm-none d-md-block topbar">
                     <div class="row h-100 align-items-center">
-                        <div class="col-xl-5 col-lg-4 col-md-4 offset-lg-3 offset-md-1">
+                        <div class="col-md-3">
+                            <button type="button" class="btn btn-dark nav-btn" id="add_match">Přidat zápas</button>
+                            <button type="button" class="btn btn-dark nav-btn" id="add_done" style="display: none">Hotovo</button>
+                        </div>
+                        <div class="col-md-4">
                             <form class="form-inline" action="/action_page.php" style="margin-left: 10%">
                                 <div class="form-group" style="">
                                     <input type="text" class="form-control" placeholder="Search matches.." name="search" size="20">
@@ -72,7 +84,7 @@
                             </form>
                         </div>
 
-                        <div class="col-xl-4 col-lg-5 col-md-7">
+                        <div class="col-md-5">
                             <a href="/login"><button type="button" class="btn btn-dark float-right nav-btn">Login</button></a>
                             <a href="/aboutus"><button type="button" class="btn btn-dark float-right nav-btn">About us</button></a>
                             <a href="/blog"><button type="button" class="btn btn-dark float-right nav-btn">Blog</button></a>
@@ -84,10 +96,10 @@
             <div class="row" style="height: 90vh">
                 <div class="col-md-2 d-md-block sidebar overflow-auto" id="menu" style="padding: 0px">
                     <div id="leagues" class="mt-md-4">
-                        <p class="h3 font-weight-light text-md-left" style="color: #FF8000; margin-bottom: 2%; margin-left: 2%">Top leagues</p>
+                        <p class="h3 font-weight-light text-md-left" style="color: #FF8000; margin-bottom: 5%; margin-left: 2%">Top leagues</p>
                         @foreach($leagues as $league)
                         <div class="sidefont">
-                            <a href="/?league={{$league->name_538}}">
+                            <a href="/admin_home?league={{$league->name_538}}">
                                 <p class="font-weight-light pt-2 pb-2 mt-0 mb-0 ml-2">
                                     {{$league->name_538}}
                                 </p>
@@ -105,7 +117,7 @@
                                 
                                 @if ($league->country == $country->country)
                                 <div class="sidefont">
-                                    <a href="/?league={{$league->name_538}}">
+                                    <a href="/admin_home?league={{$league->name_538}}">
                                         <p class="sub_{{$country->country}} ml-3 mt-1 pt-1 pb-1" style="display: none; color: white">
                                             {{$league->name_538}}
                                         </p>

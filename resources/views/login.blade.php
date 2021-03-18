@@ -1,6 +1,16 @@
 @extends("layouts.layout")
 @section("content")
-    <div class="row" style="height: 100%">
+
+	<script>
+		
+		$(document).ready(function() {
+			$("#no_pad_row").parent().attr("style", "padding: auto");
+
+		});
+
+	</script>
+
+    <div class="row" style="height: 100%" id="no_pad_row">
     	<div class="col-md-6">
     		<div class="row mt-5" style="height: 80%; border-right: 1px solid black">
     			<div class="col-md-6 offset-md-3">

@@ -16,44 +16,58 @@ class MatchController extends Controller
         $this->general = new General();
     }
 
-    public function home() {
+    public function check_and_redirect($route, $data) {
+        $user = $data->session()->get("user");
         $matches = $this->general->getMatches();
         $leagues = $this->general->getLeagues();
         $countries = $this->general->getCountries();
-        return view('home', ["matches"=>$matches, "leagues"=>$leagues, "countries"=>$countries]);
-    }
-
-    public function login() {
-        $leagues = $this->general->getLeagues();
-        $countries = $this->general->getCountries();
-        return view('login', ["leagues"=>$leagues, "countries"=>$countries]);
-    }
-
-    public function blog() {
-        $leagues = $this->general->getLeagues();
-        $countries = $this->general->getCountries();
         $content = $this->general->getOther();
-        return view('blog', ["leagues"=>$leagues, "countries"=>$countries, "content"=>$content]);
+
+        if ($user == "admin") {
+            return redirect()->route("adm_" . $route);
+        } else {
+            return view($route, ["leagues"=>$leagues, "countries"=>$countries, "matches"=>$matches, "content"=>$content]);
+        }
+
+    }
+    
+
+    public function home(Request $data) {
+        return $this->check_and_redirect('home', $data);
     }
 
-    public function aboutus() {
+
+    public function login(Request $data) {
+        return $this->check_and_redirect('login', $data);
+    }
+
+    public function blog(Request $data) {
+        return $this->check_and_redirect('blog', $data);
+        /*
+        $user = $data->session()->get("user");
         $leagues = $this->general->getLeagues();
         $countries = $this->general->getCountries();
-        return view('aboutus', ["leagues"=>$leagues, "countries"=>$countries]);
+        
+        return view('blog', ["leagues"=>$leagues, "countries"=>$countries, "content"=>$content]);*/
+    }
+
+    public function aboutus(Request $data) {
+        return $this->check_and_redirect('aboutus', $data);
     }
 
     public function adm_blog() {
+        $matches = $this->general->getMatches();
         $leagues = $this->general->getLeagues();
         $countries = $this->general->getCountries();
         $content = $this->general->getOther();
         return view('adm_blog', ["leagues"=>$leagues, "countries"=>$countries, "content"=>$content]);
     }
 
-    public function adm_matches() {
-        $matches = Matches::where("date", ">=", Carbon::now())->orderBy("priority", "asc")->orderBy("date", "asc")->take(30)->get();
+    public function adm_home() {
+        $matches = $this->general->getMatches();
         $leagues = $this->general->getLeagues();
         $countries = $this->general->getCountries();
-        return view('adm_matches', ["leagues"=>$leagues, "countries"=>$countries, "matches"=>$matches]);
+        return view('adm_home', ["leagues"=>$leagues, "countries"=>$countries, "matches"=>$matches]);
     }
 
 }
