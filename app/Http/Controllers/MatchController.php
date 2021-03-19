@@ -30,12 +30,30 @@ class MatchController extends Controller
         }
 
     }
-    
+
 
     public function home(Request $data) {
         return $this->check_and_redirect('home', $data);
     }
 
+    // dočasná stránka na testování vyhledávání, po přesunu do layoutu možno smazat
+    public function search(Request $data) {
+        return $this->check_and_redirect('search', $data);
+    }
+
+    // ajax dotaz pro vyhledávání
+    public function search_match(Request $request)
+    {
+        if($request->ajax())
+        {
+            $output="";
+            $matches=Matches::where('team1','LIKE','%'.$request->search."%")->orWhere('team2','LIKE','%'.$request->search."%")->get();
+            if($matches)
+            {
+                return Response($matches); // $output
+            }
+        }
+    }
 
     public function login(Request $data) {
         return $this->check_and_redirect('login', $data);
@@ -47,7 +65,7 @@ class MatchController extends Controller
         $user = $data->session()->get("user");
         $leagues = $this->general->getLeagues();
         $countries = $this->general->getCountries();
-        
+
         return view('blog', ["leagues"=>$leagues, "countries"=>$countries, "content"=>$content]);*/
     }
 
