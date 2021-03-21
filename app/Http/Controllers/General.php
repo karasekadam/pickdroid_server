@@ -32,15 +32,10 @@ class General extends Controller
     public function getMatches() {
     	$sport = request("sport");   //nešlo mi to použít jako parametr místo Matches, tak buď na to přijdu, nebo tam budou ify, když nebude moc sportů
         $league = request("league");
-        $match = request("id");     // pro vyhledávání, aby se dal zobrazit jednotlivý zápas, pozděj to stejně bude asi potřeba pro všechny
         if ($league) {
             $matches = Matches::where("league", $league)->where("date", ">=", Carbon::now())->orderBy("priority", "asc")->orderBy("date", "asc")->get();
         }
-
-        else if ($match) {
-            $matches = Matches::where("id", $match)->get();
-        }
-
+        
         else {
             $matches = Matches::where("date", ">=", Carbon::now())->orderBy("priority", "asc")->orderBy("date", "asc")->take(30)->get();
         }
@@ -49,7 +44,12 @@ class General extends Controller
     }
 
     public function getLeagues() {
-    	$leagues = Leagues::select("country", "name_538")->take(6)->get();
+    	$leagues = Leagues::select("country", "name_538")->get();
+        return $leagues;
+    }
+
+    public function getTopLeagues() {
+        $leagues = Leagues::select("country", "name_538")->take(5)->get();
         return $leagues;
     }
 

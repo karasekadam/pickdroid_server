@@ -31,6 +31,65 @@
                     $(".sub_"+value).slideToggle();
                 });
 
+
+
+                let search = document.getElementById("search");
+                window.search = search; // Put the element in window so we can access it easily later
+                search.autocomplete = "off"; // Disable browser autocomplete
+                // ajax dotaz k searchboxu na keyup
+                $('#search').on('keyup',function(){
+                    $value=$(this).val();
+                    $.ajax({
+                        type : 'get',
+                        url : '{{URL::to('search_match')}}',
+                        data:{'search':$value},
+                        success:function(data){
+                            let elem = search;
+                            let selector = document.getElementById("selector");
+                            // Check if input is empty
+                            if (elem.value.trim() !== "") {
+                                elem.classList.add("dropdown"); // Add dropdown class (for the CSS border-radius)
+                                // If the selector div element does not exist, create it
+                                if (selector == null) {
+                                    selector = document.createElement("div");
+                                    selector.id = "selector";
+                                    elem.parentNode.appendChild(selector);
+                                    // Position it below the input element
+                                    selector.style.left = elem.getBoundingClientRect().left + "px";
+                                    selector.style.top = elem.getBoundingClientRect().bottom + "px";
+                                    selector.style.width = elem.getBoundingClientRect().width + "px";
+                                }
+                                // Clear everything before new search
+                                selector.innerHTML = "";
+                                // Variable if result is empty
+                                let empty = true;
+                                for (let item in data) {
+                                    // vytvoří link pro každý výsledek, který dostal od serveru
+                                    let opt = document.createElement("a");
+                                    opt.setAttribute("href", "#") //http://127.0.0.1:8002/?id=" + data[item].id + "'"
+                                    str = data[item].team1 + " - " + data[item].team2;
+                                    opt.innerHTML = str;
+                                    selector.appendChild(opt);
+                                    empty = false;
+                                }
+                                // If result is empty, display a disabled button with text
+                                if (empty == true) {
+                                    let opt = document.createElement("div");
+                                    opt.disabled = true;
+                                    opt.innerHTML = "No results";
+                                    selector.appendChild(opt);
+                                }
+                            }
+                            // Remove selector element if input is empty
+                            else {
+                                if (selector !== null) {
+                                    selector.parentNode.removeChild(selector);
+                                    elem.classList.remove("dropdown");
+                                }
+                            }
+                        }
+                    });
+                })
             });
         </script>
 
@@ -65,7 +124,7 @@
                         <div class="col-xl-5 col-lg-4 col-md-4 offset-lg-3 offset-md-1">
                             <form class="form-inline" action="/action_page.php" style="margin-left: 10%">
                                 <div class="form-group" style="">
-                                    <input type="text" class="form-control" placeholder="Search matches.." name="search" size="20">
+                                    <input type="text" class="form-control" placeholder="Search matches.." id="search" name="search" size="40">
                                     <button type="button" class="btn btn-outline-dark" style="margin-left: 0.5em"><i class="fa fa-search"></i></button>
                                 </div>
 
@@ -85,7 +144,7 @@
                 <div class="col-md-2 d-md-block sidebar overflow-auto" id="menu" style="padding: 0px">
                     <div id="leagues" class="mt-md-4">
                         <p class="h3 font-weight-light text-md-left" style="color: #FF8000; margin-bottom: 2%; margin-left: 2%">Top leagues</p>
-                        @foreach($leagues as $league)
+                        @foreach($top_leagues as $league)
                         <div class="sidefont">
                             <a href="/?league={{$league->name_538}}">
                                 <p class="font-weight-light pt-2 pb-2 mt-0 mb-0 ml-2">
@@ -102,7 +161,6 @@
                             <p onclick="" class="font-weight-light pt-2 pb-2 mt-0 mb-0 ml-2 doToggle" id="{{$country->country}}">{{$country->country}}</p>
                         </div>
                             @foreach($leagues as $league)
-                                
                                 @if ($league->country == $country->country)
                                 <div class="sidefont">
                                     <a href="/?league={{$league->name_538}}">

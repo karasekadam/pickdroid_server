@@ -39,6 +39,78 @@
                 $("#add_done").click(function() {
                     $("#form_new_match").submit();
                 });
+
+                $(".pencil_league").click(function() {
+                    //$(this).parent().parent().children("p").css("display", "none");
+                    $(this).parent().children("a").css("display", "none");
+                    $(this).parent().children("i").css("display", "none");
+                    $(this).parent().children("input").css("display", "inline");
+                    $(this).parent().children("button").css("display", "inline");
+                });
+
+                $(".leag_submit").click(function() {
+                    $(this).parent().parent().parent().submit();
+                });
+
+
+                let search = document.getElementById("search");
+                window.search = search; // Put the element in window so we can access it easily later
+                search.autocomplete = "off"; // Disable browser autocomplete
+                // ajax dotaz k searchboxu na keyup
+                $('#search').on('keyup',function(){
+                    $value=$(this).val();
+                    $.ajax({
+                        type : 'get',
+                        url : '{{URL::to('search_match')}}',
+                        data:{'search':$value},
+                        success:function(data){
+                            let elem = search;
+                            let selector = document.getElementById("selector");
+                            // Check if input is empty
+                            if (elem.value.trim() !== "") {
+                                elem.classList.add("dropdown"); // Add dropdown class (for the CSS border-radius)
+                                // If the selector div element does not exist, create it
+                                if (selector == null) {
+                                    selector = document.createElement("div");
+                                    selector.id = "selector";
+                                    elem.parentNode.appendChild(selector);
+                                    // Position it below the input element
+                                    selector.style.left = elem.getBoundingClientRect().left + "px";
+                                    selector.style.top = elem.getBoundingClientRect().bottom + "px";
+                                    selector.style.width = elem.getBoundingClientRect().width + "px";
+                                }
+                                // Clear everything before new search
+                                selector.innerHTML = "";
+                                // Variable if result is empty
+                                let empty = true;
+                                for (let item in data) {
+                                    // vytvoří link pro každý výsledek, který dostal od serveru
+                                    let opt = document.createElement("a");
+                                    opt.setAttribute("href", "#") //http://127.0.0.1:8002/?id=" + data[item].id + "'"
+                                    str = data[item].team1 + " - " + data[item].team2;
+                                    opt.innerHTML = str;
+                                    selector.appendChild(opt);
+                                    empty = false;
+                                }
+                                // If result is empty, display a disabled button with text
+                                if (empty == true) {
+                                    let opt = document.createElement("div");
+                                    opt.disabled = true;
+                                    opt.innerHTML = "No results";
+                                    selector.appendChild(opt);
+                                }
+                            }
+                            // Remove selector element if input is empty
+                            else {
+                                if (selector !== null) {
+                                    selector.parentNode.removeChild(selector);
+                                    elem.classList.remove("dropdown");
+                                }
+                            }
+                        }
+                    });
+                })
+
             });
         </script>
 
@@ -46,7 +118,7 @@
             <div class="row" id="topbar_row">
                 <div class="col-md-2 col-12 sidebar text-md-center">
                     <div class="d-none d-sm-none d-md-block">
-                            <a href="/">
+                            <a href="/admin_home">
                                 <img src="img/robot2.png" alt="logo" id="robot">
                             </a>
                     </div>
@@ -56,7 +128,7 @@
                             <i class="fa fa-bars fa-2x float-left" id="menu-toggle" style="color: white; size: 5px"></i>
                         </div>
                         <div class="col-3 d-md-none">
-                            <a href="/">
+                            <a href="/admin_home">
                                 <img src="img/robot2.png" alt="logo" id="robot" class="d-none d-md-block">
                                 <img src="img/robot2.png" alt="logo" id="robot2" class="d-md-none" style="width: 4em">
 
@@ -77,7 +149,7 @@
                         <div class="col-md-4">
                             <form class="form-inline" action="/action_page.php" style="margin-left: 10%">
                                 <div class="form-group" style="">
-                                    <input type="text" class="form-control" placeholder="Search matches.." name="search" size="20">
+                                    <input type="text" class="form-control" placeholder="Search matches.." name="search" id="search" size="40">
                                     <button type="button" class="btn btn-outline-dark" style="margin-left: 0.5em"><i class="fa fa-search"></i></button>
                                 </div>
 
@@ -85,9 +157,11 @@
                         </div>
 
                         <div class="col-md-5">
-                            <a href="/login"><button type="button" class="btn btn-dark float-right nav-btn">Login</button></a>
-                            <a href="/aboutus"><button type="button" class="btn btn-dark float-right nav-btn">About us</button></a>
-                            <a href="/blog"><button type="button" class="btn btn-dark float-right nav-btn">Blog</button></a>
+                            {!! Form::open(['action' => 'mainControl@logout', 'method' => 'POST']) !!}
+                            <button type="submit" class="btn btn-dark float-right nav-btn">Odhlásit se</button>
+                            {!! Form::close() !!}
+                            <a href="/admin_aboutus"><button type="button" class="btn btn-dark float-right nav-btn">About us</button></a>
+                            <a href="/admin_blog"><button type="button" class="btn btn-dark float-right nav-btn">Blog</button></a>
                         </div>
                     </div>
                 </div>
@@ -97,14 +171,20 @@
                 <div class="col-md-2 d-md-block sidebar overflow-auto" id="menu" style="padding: 0px">
                     <div id="leagues" class="mt-md-4">
                         <p class="h3 font-weight-light text-md-left" style="color: #FF8000; margin-bottom: 5%; margin-left: 2%">Top leagues</p>
-                        @foreach($leagues as $league)
-                        <div class="sidefont">
-                            <a href="/admin_home?league={{$league->name_538}}">
-                                <p class="font-weight-light pt-2 pb-2 mt-0 mb-0 ml-2">
-                                    {{$league->name_538}}
-                                </p>
-                            </a>
-                        </div>
+                        @foreach($top_leagues as $league)
+                            {!! Form::open(['action' => 'mainControl@update_league', 'method' => 'POST']) !!}
+                            <input type="hidden" name="old_leag_name" value="{{$league->name_538}}">
+                            <div class="">
+                                    <p class="font-weight-light pt-2 pb-2 mt-0 mb-0 ml-2">
+                                        <a href="/admin_home?league={{$league->name_538}}" style="color: white; text-decoration: none">{{$league->name_538}}</a>
+                                        <i class="fa fa-pencil ml-2 pencil_league" style="color: white" value="0">
+                                        </i>
+                                        <input type="text" class="text_field" name="new_leag_name" style="display: none; height: 20%" size="12">
+                                        <button type="button" class="btn btn-sm ok leag_submit" style="background-color: white; margin-bottom: 2%" value="date">Ok</button>
+                                    </p>
+                            </div>
+
+                            {!! Form::close() !!}
                         @endforeach
                     </div>
                     <div style="border-bottom: 1px solid white; width: 80%; margin-left: 2%"></div>

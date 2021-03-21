@@ -86,6 +86,44 @@ a#log {
     display: none;
 }
 
+/* Search bar elements */
+
+#selector {
+    position: fixed;
+    border: 1px solid black;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    max-height: 150px;
+    overflow: auto;
+    margin-top: 2px;
+    z-index: 1000
+}
+
+#selector a, #selector div {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    outline: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border: none;
+    display: block;
+    background-color: #ffffff;
+    margin: 0;
+    border-width: 0;
+    width: 100%;
+    text-align: left;
+}
+
+#selector a {
+    text-decoration: none;
+    color: black;
+}
+
+#selector a:hover {
+    background-color: #f2f2f2;
+}
+
 @media screen and (max-width : 576px)
 {
 

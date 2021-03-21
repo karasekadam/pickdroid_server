@@ -31,10 +31,9 @@ class mainControl extends Controller
         }
 
         $data->session()->put("user", $data->email);
-
-        $matches = $this->general->getMatches();
-        $leagues = $this->general->getLeagues();
-        $countries = $this->general->getCountries();
+        if ($data->email == "admin") {
+            return redirect()->route("adm_home");
+        }
         return redirect()->route("home");
     }
 
@@ -62,8 +61,14 @@ class mainControl extends Controller
         $user->save();
         
         $leagues = $this->general->getLeagues();
+        $top_leagues = $this->general->getTopLeagues();
         $countries = $this->general->getCountries();
-        return view('success_reg', ["leagues"=>$leagues, "countries"=>$countries]);
+        return view('success_reg', ["leagues"=>$leagues, "top_leagues"=>$top_leagues, "countries"=>$countries]);
+    }
+
+    public function logout(Request $data) {
+        $data->session()->put("user", "");
+        return redirect()->route("home");
     }
 
     public function update_other(Request $data) {
@@ -74,25 +79,50 @@ class mainControl extends Controller
 
         $leagues = $this->general->getLeagues();
         $countries = $this->general->getCountries();
-        return redirect()->route('adm_blog');
+        $route = str_replace("_", "", $field);
+        return redirect()->route('adm_' . $route);
     }
 
     public function update_match(Request $data) {
         $column_name = $data->column_name;
-        $update_value = Matches::where("id", $data->output_id)->update([$column_name=>$data->$column_name]);
+        $value = $data->$column_name;
+        if ($column_name == "date") {
+            $splitted = explode(".", $value);
+            if ($splitted[1] < 10 and (substr($splitted[1], 0, 1) != "0")) {
+                $splitted[1] = "0" . $splitted[1];
+            }
+
+            $value = "2021-" . $splitted[1] . "-" . $splitted[0];
+        }
+        $update_value = Matches::where("id", $data->output_id)->update([$column_name=>$value]);
+        return redirect()->route('adm_home');
+    }
+
+    public function update_league(Request $data) {
+        $league_name = $data->old_leag_name;
+        $update_value = Leagues::where("name_538", $league_name)->update(["name_538"=>$data->new_leag_name]);
         return redirect()->route('adm_home');
     }
 
     public function new_match(Request $data) {
+        $date = $data->date;
+        if (!is_null($date)) {
+            $splitted = explode(".", $date);
+            if ($splitted[1] < 10 and (substr($splitted[1], 0, 1) != "0")) {
+                $splitted[1] = "0" . $splitted[1];
+            }
+            
+            $date = "2021-" . $splitted[1] . "-" . $splitted[0];
+        }
+
         $new_match = new Matches();
-        $new_match->date = $data->date;
+        $new_match->date = $date;
         $new_match->team1 = $data->team1;
         $new_match->team2 = $data->team2;
-        $new_match->spi1 = $data->spi1;
-        $new_match->spi2 = $data->spi2;
         $new_match->prob1 = $data->prob1;
+        $new_match->probtie = $data->probtie;
+        $new_match->prob2 = $data->prob2;
         $new_match->save();
         return redirect()->route('adm_home');
     }
-
 }

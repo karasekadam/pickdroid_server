@@ -19,44 +19,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- styly k odkazům v dropdownu -->
-    <style>
-        input#search.dropdown {
-            border-bottom-left-radius: 0;
-            border-bottom-right-radius: 0;
-        }
-
-        #selector {
-            position: fixed;
-            box-shadow: 0 0 0 2px #000000;
-            border-bottom-left-radius: 5px;
-            border-bottom-right-radius: 5px;
-            margin-top: 2px;
-            max-height: 150px;
-            overflow: auto;
-        }
-
-        #selector a, #selector div {
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-            outline: none;
-            font-size: 10px;
-            padding: 10px 20px;
-            cursor: pointer;
-            border: none;
-            display: block;
-            background-color: #ffffff;
-            margin: 0;
-            border-radius: 5px;
-            border-width: 0;
-            width: 100%;
-            text-align: left;
-        }
-
-        #selector a:hover {
-            background-color: #f2f2f2;
-        }
-    </style>
 </head>
 
 <body>
@@ -71,6 +33,64 @@
             value = $(this).attr("id");
             $(".sub_"+value).slideToggle();
         });
+
+    let search = document.getElementById("search");
+    window.search = search; // Put the element in window so we can access it easily later
+    search.autocomplete = "off"; // Disable browser autocomplete
+    // ajax dotaz k searchboxu na keyup
+    $('#search').on('keyup',function(){
+        $value=$(this).val();
+        $.ajax({
+            type : 'get',
+            url : '{{URL::to('search_match')}}',
+            data:{'search':$value},
+            success:function(data){
+                let elem = search;
+                let selector = document.getElementById("selector");
+                // Check if input is empty
+                if (elem.value.trim() !== "") {
+                    elem.classList.add("dropdown"); // Add dropdown class (for the CSS border-radius)
+                    // If the selector div element does not exist, create it
+                    if (selector == null) {
+                        selector = document.createElement("div");
+                        selector.id = "selector";
+                        elem.parentNode.appendChild(selector);
+                        // Position it below the input element
+                        selector.style.left = elem.getBoundingClientRect().left + "px";
+                        selector.style.top = elem.getBoundingClientRect().bottom + "px";
+                        selector.style.width = elem.getBoundingClientRect().width + "px";
+                    }
+                    // Clear everything before new search
+                    selector.innerHTML = "";
+                    // Variable if result is empty
+                    let empty = true;
+                    for (let item in data) {
+                        // vytvoří link pro každý výsledek, který dostal od serveru
+                        let opt = document.createElement("a");
+                        opt.setAttribute("href", "http://127.0.0.1:8002/?id=" + data[item].id + "'")
+                        str = data[item].team1 + " - " + data[item].team2;
+                        opt.innerHTML = str;
+                        selector.appendChild(opt);
+                        empty = false;
+                    }
+                    // If result is empty, display a disabled button with text
+                    if (empty == true) {
+                        let opt = document.createElement("div");
+                        opt.disabled = true;
+                        opt.innerHTML = "No results";
+                        selector.appendChild(opt);
+                    }
+                }
+                // Remove selector element if input is empty
+                else {
+                    if (selector !== null) {
+                        selector.parentNode.removeChild(selector);
+                        elem.classList.remove("dropdown");
+                    }
+                }
+            }
+        });
+    })
 
     });
 </script>
@@ -103,16 +123,16 @@
 
         <div class="col-md-10 d-none d-sm-none d-md-block topbar">
             <div class="row h-100 align-items-center">
-                <div class="col-xl-5 col-lg-4 col-md-4 offset-lg-3 offset-md-1">
+                <div class="col-xl-5 col-lg-4 col-md-4 offset-lg-2 offset-md-1">
                     <form class="form-inline" action="/action_page.php" style="margin-left: 10%">
                         <div class="form-group" style="">
                             <input type="text" class="form-control" placeholder="Search matches.." id="search" name="search" size="40">
-                            <button type="button" class="btn btn-outline-dark" style="margin-left: 0.5em"><i class="fa fa-search"></i></button>
+                            <button type="button" class="btn btn-dark" style="margin-left: 0.5em"><i class="fa fa-search"></i></button>
                         </div>
                     </form>
                 </div>
 
-                <div class="col-xl-4 col-lg-5 col-md-7">
+                <div class="col-xl-5 col-lg-5 col-md-7">
                     <a href="/login"><button type="button" class="btn btn-dark float-right nav-btn">Login</button></a>
                     <a href="/aboutus"><button type="button" class="btn btn-dark float-right nav-btn">About us</button></a>
                     <a href="/blog"><button type="button" class="btn btn-dark float-right nav-btn">Blog</button></a>
@@ -184,63 +204,7 @@
 </div>
 <script type="text/javascript">
     // nastaví search box
-    let search = document.getElementById("search");
-    window.search = search; // Put the element in window so we can access it easily later
-    search.autocomplete = "off"; // Disable browser autocomplete
-    // ajax dotaz k searchboxu na keyup
-    $('#search').on('keyup',function(){
-        $value=$(this).val();
-        $.ajax({
-            type : 'get',
-            url : '{{URL::to('search_match')}}',
-            data:{'search':$value},
-            success:function(data){
-                let elem = search;
-                let selector = document.getElementById("selector");
-                // Check if input is empty
-                if (elem.value.trim() !== "") {
-                    elem.classList.add("dropdown"); // Add dropdown class (for the CSS border-radius)
-                    // If the selector div element does not exist, create it
-                    if (selector == null) {
-                        selector = document.createElement("div");
-                        selector.id = "selector";
-                        elem.parentNode.appendChild(selector);
-                        // Position it below the input element
-                        selector.style.left = elem.getBoundingClientRect().left + "px";
-                        selector.style.top = elem.getBoundingClientRect().bottom + "px";
-                        selector.style.width = elem.getBoundingClientRect().width + "px";
-                    }
-                    // Clear everything before new search
-                    selector.innerHTML = "";
-                    // Variable if result is empty
-                    let empty = true;
-                    for (let item in data) {
-                        // vytvoří link pro každý výsledek, který dostal od serveru
-                        let opt = document.createElement("a");
-                        opt.setAttribute("href", "http://127.0.0.1:8002/?id=" + data[item].id + "'")
-                        str = data[item].team1 + " - " + data[item].team2;
-                        opt.innerHTML = str;
-                        selector.appendChild(opt);
-                        empty = false;
-                    }
-                    // If result is empty, display a disabled button with text
-                    if (empty == true) {
-                        let opt = document.createElement("div");
-                        opt.disabled = true;
-                        opt.innerHTML = "No results";
-                        selector.appendChild(opt);
-                    }
-                }
-                // Remove selector element if input is empty
-                else {
-                    if (selector !== null) {
-                        selector.parentNode.removeChild(selector);
-                        elem.classList.remove("dropdown");
-                    }
-                }
-            }
-        });
-    })
+    
 </script>
 </body>
 </html>

@@ -21,14 +21,16 @@
                 var pencil_num = $(this).attr("value");
             	$(this).parent().children(".text_field:eq(" + pencil_num + ")").css("display", "inline");
             	$(this).parent().children("span:eq(" + pencil_num + ")").css("display", "none");
+                $(this).parent().children("b:eq(" + pencil_num + ")").css("display", "none");
             	$(this).parent().children("i:eq(" + pencil_num + ")").css("display", "none");
             	$(this).parent().children("button:eq(" + pencil_num + ")").css("display", "inline");
             });
 
             $(".ok").click(function() {
                 var column = $(this).attr("value");
-                $("#column_name").attr("value", column);
-            	$("#form").submit();
+                $(this).parent().parent().children("input:eq(1)").attr("value", column);
+            	var form_id = $(this).attr("form");
+                $("#" + form_id).submit();
             });
 
      });
@@ -49,76 +51,81 @@
                 <tbody>
                 
                 {!! Form::open(['action' => 'mainControl@new_match', 'method' => 'POST', 'id' => 'form_new_match']) !!}
+                {!! Form::close() !!}
+
                     <tr style="display: none" id="new_match">
                         <td class="date d-none d-md-table-cell align-middle pl-4">
-                                    <input type="text" class="text_field" name="date" style="height: 20%" size="3"><br>
-                                    <input type="text" class="text_field" name="time" style="height: 20%" size="3">
+                                    <input type="text" form="form_new_match" class="text_field" name="date" style="height: 20%" size="3"><br>
+                                    <input type="text" form="form_new_match" class="text_field" name="time" style="height: 20%" size="3">
                                 </td>
 
                                 
                                 <td class="match d-none d-md-table-cell align-middle">
-                                    <input type="text" class="text_field" name="team1" style="height: 20%" size="7">
+                                    <input type="text" form="form_new_match" class="text_field" name="team1" style="height: 20%" size="7">
                                     -
-                                    <input type="text" class="text_field" name="team2" style="height: 20%" size="7">
+                                    <input type="text" form="form_new_match" class="text_field" name="team2" style="height: 20%" size="7">
                                 </td>
 
                                 <td class="league d-none d-md-table-cell align-middle">
                                 </td>
 
                                 <td class="rate text-center align-middle">
-                                    <input type="text" class="text_field" name="spi1" style="height: 20%" 
+                                    <input type="text" form="form_new_match" class="text_field" name="prob1" style="height: 20%" 
                                     size="3">
                                     <br>
-                                    <input type="text" class="text_field" style="height: 20%" 
+                                    <input type="text" form="form_new_match" class="text_field" style="height: 20%" 
                                     size="3">
                                 </td>
 
                                 <td class="rate text-center align-middle">
-                                    <input type="text" class="text_field" name="spi2" style="height: 20%" 
+                                    <input type="text" form="form_new_match" class="text_field" name="probtie" style="height: 20%" 
                                     size="3">
                                     <br>
-                                    <input type="text" class="text_field" style="height: 20%" 
+                                    <input type="text" form="form_new_match" class="text_field" style="height: 20%" 
                                     size="3">
                                 </td>
 
                                 <td class="rate text-center align-middle">
-                                    <input type="text" class="text_field" name="prob1" style="height: 20%" 
+                                    <input type="text" form="form_new_match" class="text_field" name="prob2" style="height: 20%" 
                                     size="3">
                                     <br>
-                                    <input type="text" class="text_field" style="height: 20%" 
+                                    <input type="text" form="form_new_match" class="text_field" style="height: 20%" 
                                     size="3">
                                 </td>
 
-                </tr>
-                {!! Form::close() !!}
+                    </tr>
+                
 
 
                 @foreach($matches as $match)
-                    {!! Form::open(['action' => 'mainControl@update_match', 'method' => 'POST', 'id' => 'form']) !!}
-                        <input type="hidden" name="output_id" value="{{$match->id}}">
-                        <input type="hidden" name="column_name" id="column_name" value="">
+                    {!! Form::open(['action' => 'mainControl@update_match', 'method' => 'POST', 'id' => $match->id]) !!}
+                    {!! Form::close() !!}
+                        
                         <tr>
+                            <input type="hidden" form="{{$match->id}}" name="output_id" value="{{$match->id}}">
+                            <input type="hidden" form="{{$match->id}}" name="column_name" class="column_name" value="">
                             <td class="date d-none d-md-table-cell align-middle pl-4">
+                                
                                 <span class="match_date">{{$match->date}}</span>
-                                <input type="text" class="text_field" name="date" style="display: none; height: 20%" size="3">
+                                <input type="text" form="{{$match->id}}" class="text_field" name="date" style="display: none; height: 20%" size="3">
                                 <i class="fa fa-pencil ml-2 pencil" value="0"></i>
-                                <button type="button" class="btn btn-sm ok" value="date">Ok</button>
+                                <button type="button" form="{{$match->id}}" class="btn btn-sm ok" value="date">Ok</button>
                                 <br><span>11:11</span>
-                                <input type="text" class="text_field" name="time" style="display: none; height: 20%" size="3">
+                                <input type="text" form="{{$match->id}}" class="text_field" name="time" style="display: none; height: 20%" size="3">
                                 <i class="fa fa-pencil ml-2 pencil" value="1"></i>
-                                <button type="button" class="btn btn-sm ok" value="time">Ok</button>
+                                <button type="button" form="{{$match->id}}" class="btn btn-sm ok" style="display: none" value="time">Ok</button>
                             </td>
-
                             
                             <td class="match d-none d-md-table-cell align-middle">
                             	<img src="img/logo.png" class="web_logo" alt="logo týmu"><span>{{$match->team1}}</span>
-                            	<input type="text" class="text_field" name="team1" style="display: none; height: 20%" size="7">
+                            	<input type="text" form="{{$match->id}}" class="text_field" name="team1" style="display: none; height: 20%" size="7">
                             	<i class="fa fa-pencil ml-2 pencil" value="0"></i>
-                            	<button type="button" class="btn btn-sm ok" value="team1">Ok</button> - 
+                            	<button type="button" form="{{$match->id}}" class="btn btn-sm ok" value="team1">Ok</button> - 
                             	<img src="img/logo.png" class="web_logo" alt="logo týmu"><span>{{$match->team2}}</span>
-                            	<input type="text" class="text_field" name="team2" style="display: none; height: 20%" size="7">
+                            	<input type="text" form="{{$match->id}}" class="text_field" name="team2" style="display: none; height: 20%" size="7">
                             	<i class="fa fa-pencil ml-2 pencil" value="1"></i>
-                            	<button type="button" class="btn btn-sm ok" value="team2">Ok</button>
+                            	<button type="button" form="{{$match->id}}" class="btn btn-sm ok" value="team2">Ok</button>
+
                       		</td>
 
                             <td class="match d-md-none">
@@ -134,44 +141,46 @@
                             	<i class="fa fa-pencil ml-2 pencil"></i>
                             </td>
 
-                            <td class="rate text-center align-middle"><b><span>{{$match->spi1}}</span>
-                                <input type="text" class="text_field" name="spi1" style="display: none; height: 20%" 
+                            <td class="rate text-center align-middle"><b><span>{{$match->prob1}}</span></b>
+                                <input type="text" form="{{$match->id}}" class="text_field" name="prob1" style="display: none; height: 20%" 
                                 size="3">
                             	<i class="fa fa-pencil ml-2 pencil" value="0"></i>
-                                <button type="button" class="btn btn-sm ok" value="spi1">Ok</button>
-                            	<br><span>1.11</span>
-                                <input type="text" class="text_field" style="display: none; height: 20%" 
+                                <button type="button" form="{{$match->id}}" class="btn btn-sm ok" value="prob1">Ok</button>
+                            	<br><b><span>1.11</span></b>
+                                <input type="text" form="{{$match->id}}" class="text_field" style="display: none; height: 20%" 
                                 size="3">
                             	<i class="fa fa-pencil ml-2 pencil" value="1"></i>
-                                <button type="button" class="btn btn-sm ok">Ok</button>
+                                <button type="button" form="{{$match->id}}" class="btn btn-sm ok">Ok</button>
                             </td>
 
-                            <td class="rate text-center align-middle"><b><span>{{$match->spi2}}</span>
-                                <input type="text" class="text_field" name="spi2" style="display: none; height: 20%" 
+                            <td class="rate text-center align-middle"><b><span>{{$match->probtie}}</span></b>
+                                <input type="text" form="{{$match->id}}" class="text_field" name="probtie" style="display: none; height: 20%" 
                                 size="3">
                                 <i class="fa fa-pencil ml-2 pencil" value="0"></i>
-                                <button type="button" class="btn btn-sm ok" value="spi2">Ok</button>
-                                <br><span>1.11</span>
-                                <input type="text" class="text_field" style="display: none; height: 20%" 
+                                <button type="button" form="{{$match->id}}" class="btn btn-sm ok" value="probtie">Ok</button>
+                                <br><b><span>1.11</span></b>
+                                <input type="text" form="{{$match->id}}" class="text_field" style="display: none; height: 20%" 
                                 size="3">
                                 <i class="fa fa-pencil ml-2 pencil" value="1"></i>
-                                <button type="button" class="btn btn-sm ok">Ok</button>
+                                <button type="button" form="{{$match->id}}" class="btn btn-sm ok">Ok</button>
                             </td>
 
-                            <td class="rate text-center align-middle"><b><span>{{$match->prob1}}</span>
-                                <input type="text" class="text_field" name="prob1" style="display: none; height: 20%" 
+                            <td class="rate text-center align-middle"><b><span>{{$match->prob2}}</span></b>
+                                <input type="text" form="{{$match->id}}" class="text_field" name="prob2" style="display: none; height: 20%" 
                                 size="3">
                                 <i class="fa fa-pencil ml-2 pencil" value="0"></i>
-                                <button type="button" class="btn btn-sm ok" value="prob1">Ok</button>
-                                <br><span>1.11</span>
-                                <input type="text" class="text_field" style="display: none; height: 20%" 
+                                <button type="button" form="{{$match->id}}" class="btn btn-sm ok" value="prob2">Ok</button>
+                                <br><b><span>1.11</span></b>
+                                <input type="text" form="{{$match->id}}" class="text_field" style="display: none; height: 20%" 
                                 size="3">
                                 <i class="fa fa-pencil ml-2 pencil" value="1"></i>
-                                <button type="button" class="btn btn-sm ok">Ok</button>
+                                <button type="button" form="{{$match->id}}" class="btn btn-sm ok">Ok</button>
                             </td>
+                            
                         </tr>
-                    {!! Form::close() !!}
+                    
                 @endforeach
+                
                 </tbody>
             </table>
         </div>
