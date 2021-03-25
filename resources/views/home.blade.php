@@ -6,35 +6,25 @@
         $(document).ready(function() {
 
             document.getElementById("wrap").addEventListener("scroll", function(){
-           var translate = "translate(0,"+this.scrollTop+"px)";
+           var translate = "translateY(-1px)";
            this.querySelector("thead").style.transform = translate;
             });
 
             var date = document.getElementsByClassName("match_date");
-            var date_obj = new Date();
-            var month = (date_obj.getMonth())+1;
-            if (month < 10) {
-                month = "0" + month;
-            }
-            var day = date_obj.getDate();
-            var today = day + "." + month
             for (var x = 0; x < date.length; x++) {
                 var spl = date[x].innerText.split("-");
                 var result = spl[2] + "." + spl[1];
-                if (result != today) {
-                    date[x].innerText = result;
-                } else {
-                    date[x].innerText = "";
-                }
+                date[x].innerText = result;
+
                 
             }
 
      });
     </script>
 
-        <div id="wrap" style="height: 90vh; overflow-y: auto; overflow-x: hidden">
+        <div id="wrap" style="height: 90vh; overflow-x: hidden; overflow-y: auto">
             <table class="table">
-                <thead class="thead-light h-50">
+                <thead class="thead-light">
                     <tr>
                         <th class="date align-middle d-none d-md-table-cell font-weight-light h4" 
                         style="width: 7%">Date</th>
@@ -56,9 +46,9 @@
 
                         <td class="league d-none d-md-table-cell align-middle"><img src="img/logo.png" class="web_logo ml-3" alt="logo ligy"></td>
 
-                        <td class="rate text-center align-middle"><b>{{$match->prob1}}<br>1.11</b></td>
-                        <td class="rate text-center align-middle"><b>{{$match->probtie}}<br>1.11</b></td>
-                        <td class="rate text-center align-middle"><b>{{$match->prob2}}<br>1.11</b></td>
+                        <td class="rate text-center align-md-middle"><div class="rate_pad"><b>{{$match->prob1}}<br>1.11</b></div></td>
+                        <td class="rate text-center align-md-middle"><div class="rate_pad"><b>{{$match->probtie}}<br>1.11</b></div></td>
+                        <td class="rate text-center align-md-middle"><div class="rate_pad"><b>{{$match->prob2}}<br>1.11</b></div></td>
                     </tr>
                 @endforeach
                 </tbody>

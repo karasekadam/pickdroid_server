@@ -6,6 +6,12 @@ td {
     white-space: nowrap;
 }
 
+th {
+    position: sticky;
+    top: 0;
+}
+
+
 a#log {
     color:black;
     text-decoration: none
@@ -124,6 +130,8 @@ a#log {
     background-color: #f2f2f2;
 }
 
+
+
 @media screen and (max-width : 576px)
 {
 
@@ -137,6 +145,10 @@ a#log {
 
     thead .h4 {
         font-size: 1em;
+    }
+
+    .rate_pad {
+    margin-top: -6px;
     }
 
 }
