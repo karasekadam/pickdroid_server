@@ -20,11 +20,17 @@
 
     <body>
         <script>
+            // funkce vyhledávacího tlačíka
+            function search_site() {
+                name = document.getElementById("search").value
+                window.location.replace("http://www.dangrb.dreamhosters.com/?search=" + name); // http://127.0.0.1:8000/?search=
+            }
+
             $(document).ready(function() {
                 $("#menu-toggle").click(function() {
                     $("#menu").slideToggle();
                 });
-            
+
 
                 $(".doToggle").click(function() {
                     value = $(this).attr("id");
@@ -69,7 +75,7 @@
                                     for (let item in data) {
                                         // vytvoří link pro každý výsledek, který dostal od serveru
                                         let opt = document.createElement("a");
-                                        opt.setAttribute("href", "#") //http://127.0.0.1:8002/?id=" + data[item].id + "'"
+                                        opt.setAttribute("href", "http://www.dangrb.dreamhosters.com/?id=" + data[item].id + "'") // http://127.0.0.1:8000/?id=
                                         str = data[item].team1 + " - " + data[item].team2;
                                         opt.innerHTML = str;
                                         selector.appendChild(opt);
@@ -93,8 +99,8 @@
                             }
                         });
                     };
-                    
-                };
+
+                }
             });
         </script>
 
@@ -130,7 +136,7 @@
                             <form class="form-inline" action="/action_page.php" style="margin-left: 10%">
                                 <div class="form-group" style="">
                                     <input type="text" class="form-control" placeholder="Search matches.." id="search" name="search" size="40">
-                                    <button type="button" class="btn btn-outline-dark" style="margin-left: 0.5em"><i class="fa fa-search"></i></button>
+                                    <button type="button" onclick="search_site()" class="btn btn-outline-dark" style="margin-left: 0.5em"><i class="fa fa-search"></i></button>
                                 </div>
 
                             </form>
@@ -186,10 +192,10 @@
                                     </a>
                                 </div>
                                 @endif
-                    
+
                             @endforeach
 
-                        
+
                         @endforeach
                     </div>
                 </div>
