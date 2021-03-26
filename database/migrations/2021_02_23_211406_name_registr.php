@@ -13,6 +13,7 @@ class NameRegistr extends Migration
      */
     public function up()
     {
+        // netuším, co to dělá
         Schema::create('name_registr', function (Blueprint $table) {
             $table->id()->unique();
             $table->string('sport');

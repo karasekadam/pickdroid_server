@@ -13,6 +13,7 @@ class LeaguesForeignNames extends Migration
      */
     public function up()
     {
+        // cizojazyčný název ligy z 538
         Schema::create('leagues_foreign_names', function (Blueprint $table) {
             // imo není potřeba $table->id()->unique();
             $table->integer("league_id");

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CountriesForeignNames extends Migration
+class SoccerLeaguesDictionary extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,13 @@ class CountriesForeignNames extends Migration
      */
     public function up()
     {
-        // cizojazyčný název státu z 538
-        Schema::create('countries_foreign_names', function (Blueprint $table) {
+        // slovník přejmenování lig z 538
+        Schema::create('leagues', function (Blueprint $table) {
             // imo není potřeba $table->id()->unique();
-            $table->string('en_country');
-            $table->string('foreign_name');
-            $table->string('foreign_country');
+            // zatim neřeším $table->string('sport');
+            $table->string('league_name_538')->unique();
+            $table->integer('538_league_id')->unique();
+            $table->string('our_name');
         });
     }
 
@@ -29,6 +30,6 @@ class CountriesForeignNames extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('countries_foreign_names');
+        Schema::dropIfExists('soccer_leagues_dictionary');
     }
 }
