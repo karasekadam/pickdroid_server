@@ -32,12 +32,18 @@ class MatchController extends Controller
 
     }
 
+    // už asi není potřeba, pro jistotu nechávám
+    //public function search(Request $data) {
+    //    return $this->check_and_redirect("search", $data);
+    //}
+
+    // controller pro ajax dotaz
     public function search_match(Request $request)
     {
         if($request->ajax())
         {
             $output="";
-            $matches=Matches::where('team1','LIKE','%'.$request->search."%")->orWhere('team2','LIKE','%'.$request->search."%")->get();
+            $matches=Matches::where('team1','LIKE', $request->search."%")->orWhere('team2','LIKE','% '.$request->search."%")->orWhere('team2','LIKE', $request->search."%")->orWhere('team2','LIKE','% '.$request->search."%")->get();
             if($matches)
             {
                 return Response($matches); // $output
