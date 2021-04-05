@@ -34,10 +34,46 @@
                 $("#add_match").click(function() {
                     $("#new_match").show();
                     $("#add_done").show();
+                    var date = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
+                    var formatted = (new Date(Date.now() - date)).toISOString().slice(0, -1);
+                    var remove = formatted.slice(-7);
+                    var final = formatted.replace(remove, "");
+                    $("#add_time").val(final);
+                    $("#add_time").attr("min", final);
                 });
 
                 $("#add_done").click(function() {
-                    $("#form_new_match").submit();
+                    var check = 0;
+                    var prob1 = $("#prob1").val();
+                    var probtie = $("#probtie").val();
+                    var prob2 = $("#prob2").val();
+                    if (isNaN(prob1)) {
+                        $("#prob1").css("border-color", "red");
+                        console.log("1")
+                        check = 1;
+                    }
+
+                    if (isNaN(probtie)) {
+                        $("#probtie").css("border-color", "red");
+                        console.log("2")
+                        check = 1;
+                    }
+
+                    if (isNaN(prob2)) {
+                        $("#prob2").css("border-color", "red");
+                        console.log("3")
+                        check = 1;
+                    }
+
+                    if ($("#country_btn").text().trim() == 'Stát' || $("#league_btn").text().trim() == 'Liga' || $("#team_btn").text().trim() == '1. Tým' || $("#team_btn2").text().trim() == '2. Tým') {
+                        console.log("4")
+                        check = 1;
+                    }
+                    
+                    if (check == 0) {
+                        $("#date_hidden").val($("#add_time").val());
+                        $("#form_new_match").submit();
+                    }
                 });
 
                 $(".pencil_league").click(function() {
@@ -49,7 +85,18 @@
                 });
 
                 $(".leag_submit").click(function() {
-                    $(this).parent().parent().parent().submit();
+                    var input_value = $(this).parent().children("input[name='new_leag_input']").val();
+                    if (input_value == '') {
+                        $(this).prev().css("display", "none")
+                        $(this).prev().prev().css("display", "inline");
+                        $(this).prev().prev().prev().css("display", "inline");
+                        $(this).css("display", "none");
+
+                    } else {
+                        $("#old_leag_name").val($(this).parent().parent().prev().val());
+                        $("#new_leag_name").val(input_value);
+                        $("#form_leag_update").submit();
+                    }
                 });
 
 
@@ -166,48 +213,51 @@
                     </div>
                 </div>
             </div>
-
+            {!! Form::open(['action' => 'mainControl@update_league', 'method' => 'POST', 'id' => 'form_leag_update']) !!}
+            <input type="hidden" name="old_leag_name" id="old_leag_name">
+            <input type="hidden" name="new_leag_name" id="new_leag_name">
+            {!! Form::close() !!}
             <div class="row" style="height: 90vh">
                 <div class="col-md-2 d-md-block sidebar overflow-auto" id="menu" style="padding: 0px">
                     <div id="leagues" class="mt-md-4">
                         <p class="h3 font-weight-light text-md-left" style="color: #FF8000; margin-bottom: 5%; margin-left: 2%">Top leagues</p>
+                        <a href="/admin_add"><button class="btn btn-outline-light ml-1">+ Přidat ligu/tým</button></a>
                         @foreach($top_leagues as $league)
-                            {!! Form::open(['action' => 'mainControl@update_league', 'method' => 'POST']) !!}
-                            <input type="hidden" name="old_leag_name" value="{{$league->name_538}}">
-                            <div class="">
-                                    <p class="font-weight-light pt-2 pb-2 mt-0 mb-0 ml-2">
-                                        <a href="/admin_home?league={{$league->name_538}}" style="color: white; text-decoration: none">{{$league->name_538}}</a>
-                                        <i class="fa fa-pencil ml-2 pencil_league" style="color: white" value="0">
-                                        </i>
-                                        <input type="text" class="text_field" name="new_leag_name" style="display: none; height: 20%" size="12">
-                                        <button type="button" class="btn btn-sm ok leag_submit" style="background-color: white; margin-bottom: 2%" value="date">Ok</button>
-                                    </p>
+                            
+                            <input type="hidden" value="{{$league->name_538}}">
+                            <div>
+                                <p class="font-weight-light pt-2 pb-2 mt-0 mb-0 ml-2">
+                                    <a href="/admin_home?league={{$league->name_538}}" style="color: white; text-decoration: none">{{$league->name_538}}</a>
+                                    <i class="fa fa-pencil ml-2 pencil_league" style="color: white" value="0">
+                                    </i>
+                                    <input type="text" class="text_field" name="new_leag_input" style="display: none; height: 20%" size="12">
+                                    <button type="button" class="btn btn-sm leag_submit" style="background-color: white; margin-bottom: 2%; display: none" value="date">Ok</button>
+                                </p>
                             </div>
 
-                            {!! Form::close() !!}
+                            
                         @endforeach
                     </div>
                     <div style="border-bottom: 1px solid white; width: 80%; margin-left: 2%"></div>
                     <div id="countries">
                         @foreach($countries as $country)
                         <div class="sidefont">
-                            <p onclick="" class="font-weight-light pt-2 pb-2 mt-0 mb-0 ml-2 doToggle" id="{{$country->country}}">{{$country->country}}</p>
+                            <p class="font-weight-light pt-2 pb-2 mt-0 mb-0 ml-2 doToggle" id="{{$country->country}}">{{$country->country}}</p>
                         </div>
                             @foreach($leagues as $league)
-                                
                                 @if ($league->country == $country->country)
-                                <div class="sidefont">
-                                    <a href="/admin_home?league={{$league->name_538}}">
-                                        <p class="sub_{{$country->country}} ml-3 mt-1 pt-1 pb-1" style="display: none; color: white">
-                                            {{$league->name_538}}
-                                        </p>
-                                    </a>
+                                <input type="hidden" value="{{$league->name_538}}">
+                                <div>
+                                    <p class="sub_{{$country->country}} ml-3 mt-1 pt-1 pb-1" style="display: none; color: white">
+                                        <a href="/admin_home?league={{$league->name_538}}" style="text-decoration: none; color: white">{{$league->name_538}}</a>
+                                    
+                                    <i class="fa fa-pencil ml-2 pencil_league" style="color: white" value="0"></i>
+                                    <input type="text" class="text_field" name="new_leag_input" style="display: none; height: 20%" size="12">
+                                    <button type="button" class="btn btn-sm leag_submit" style="background-color: white; margin-bottom: 2%; display: none" value="date">Ok</button>
+                                    </p>
                                 </div>
                                 @endif
-                    
                             @endforeach
-
-                        
                         @endforeach
                     </div>
                 </div>

@@ -51,6 +51,28 @@ class MatchController extends Controller
         }
     }
 
+    public function find_countries(Request $data) {
+            $countries = Leagues::select("country")->distinct()->get();
+            return Response($countries);
+    }
+
+    public function find_leagues(Request $data) {
+        $leagues = Leagues::select("name_538")->where("country", $data->country)->distinct()->get();
+        return Response($leagues);
+    }
+
+    public function find_teams(Request $data) {
+        $teams = Matches::select("team1", "team2")->where("league", $data->league)->distinct()->get();
+        $teams_array = [];
+        foreach($teams as $team) {
+            array_push($teams_array, $team->team1, $team->team2);
+        }
+
+        $teams_unique = array_values(array_unique($teams_array));
+
+        return Response($teams_unique);
+    }
+
     public function home(Request $data) {
         return $this->check_and_redirect('home', $data);
     }
@@ -78,6 +100,10 @@ class MatchController extends Controller
 
     public function adm_home(Request $data) {
         return $this->check_and_redirect('home', $data);
+    }
+
+    public function adm_add(Request $data) {
+        return $this->check_and_redirect('add', $data);
     }
 
 }

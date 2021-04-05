@@ -87,38 +87,40 @@ class mainControl extends Controller
         $column_name = $data->column_name;
         $value = $data->$column_name;
         if ($column_name == "date") {
-            $splitted = explode(".", $value);
-            if ($splitted[1] < 10 and (substr($splitted[1], 0, 1) != "0")) {
-                $splitted[1] = "0" . $splitted[1];
-            }
-
-            $value = "2021-" . $splitted[1] . "-" . $splitted[0];
+            $divided = explode("T", $value);
+            $value = $divided[0];
         }
-        $update_value = Matches::where("id", $data->output_id)->update([$column_name=>$value]);
+
+        if ($column_name == "team1" or $column_name == "team2") {
+            $team_name = Matches::where("id", $data->output_id)->get();
+            $team_name = $team_name[0]->$column_name;
+            $update_value = Matches::where($column_name, $team_name)->select($column_name)->update([$column_name=>$value]);
+        } else {
+            $update_value = Matches::where("id", $data->output_id)->update([$column_name=>$value]);
+        }
+
         return redirect()->route('adm_home');
     }
 
     public function update_league(Request $data) {
-        $league_name = $data->old_leag_name;
-        $update_value = Leagues::where("name_538", $league_name)->update(["name_538"=>$data->new_leag_name]);
+        $old_league_name = $data->old_leag_name;
+        $update_matches = Matches::where("league", $old_league_name)->update(["league"=>$data->new_leag_name]);
+        $update_value = Leagues::where("name_538", $old_league_name)->update(["name_538"=>$data->new_leag_name]);
         return redirect()->route('adm_home');
     }
 
     public function new_match(Request $data) {
+        $new_match = new Matches();
         $date = $data->date;
         if (!is_null($date)) {
-            $splitted = explode(".", $date);
-            if ($splitted[1] < 10 and (substr($splitted[1], 0, 1) != "0")) {
-                $splitted[1] = "0" . $splitted[1];
-            }
-            
-            $date = "2021-" . $splitted[1] . "-" . $splitted[0];
+            $divided = explode("T", $date);
+            $new_match->date = $divided[0];
         }
 
-        $new_match = new Matches();
-        $new_match->date = $date;
-        $new_match->team1 = $data->team1;
+        $new_match->team1 = $data->team;
         $new_match->team2 = $data->team2;
+        $new_match->league = $data->league;
+        $new_match->country = $data->country;
         $new_match->prob1 = $data->prob1;
         $new_match->probtie = $data->probtie;
         $new_match->prob2 = $data->prob2;

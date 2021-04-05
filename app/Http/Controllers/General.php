@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 
 class General extends Controller
 {
-	/* vkládání lig do tabulky
+    /* vkládání lig do tabulky
         $ligy = Matches::select("league")->get();
         foreach ($ligy as $liga) {
             $check = Leagues::where("name_538", $liga->league)->get();
@@ -31,7 +31,7 @@ class General extends Controller
 
 
     public function getMatches() {
-    	// $sport = request("sport");   nešlo mi to použít jako parametr místo Matches, tak buď na to přijdu, nebo tam budou ify, když nebude moc sportů
+        // $sport = request("sport");   nešlo mi to použít jako parametr místo Matches, tak buď na to přijdu, nebo tam budou ify, když nebude moc sportů
         $league = request("league");
         $id = request("id");
         $search = request("search");    // při kliku na search hodí na domovskou s touto proměnou
@@ -52,24 +52,25 @@ class General extends Controller
     public function getLeagues() {
         // vezme pouze aktuální zápasy z matches a zkombinuje se se státy přes leagues
         // možná není čistej INNER dobře, možná left když nebude zapsaný stát??
-    	$leagues = DB::select("SELECT country, name_538 FROM (SELECT DISTINCT league FROM `matches`) AS m INNER JOIN `leagues` ON m.league=name_538;"); //Leagues::select("country", "name_538")->get();
+        $leagues = DB::select("SELECT country, name_538 FROM (SELECT DISTINCT league FROM `matches`) AS m INNER JOIN `leagues` ON m.league=name_538;"); //Leagues::select("country", "name_538")->get();
         return $leagues;
     }
 
     public function getTopLeagues() {
         // zatím dělá shit, proč to tady je?
-        $leagues = DB::select("SELECT country, name_538 FROM (SELECT DISTINCT league FROM `matches`) AS m INNER JOIN `leagues` ON m.league=name_538 LIMIT 5;"); //table("leagues")->select("country", "name_538")->take(5)->get();
+        $leagues = DB::table("leagues")->select("country", "name_538")->take(5)->get();
+        //DB::select("SELECT country, name_538 FROM (SELECT DISTINCT league FROM `matches`) AS m INNER JOIN `leagues` ON m.league=name_538 LIMIT 5;"); 
         return $leagues;
     }
 
     public function getCountries() {
-   		// vybere z aktuálních zápasů ligy a ty joine se státy z leagues
+        // vybere z aktuálních zápasů ligy a ty joine se státy z leagues
         $countries = DB::select("SELECT DISTINCT country FROM (SELECT DISTINCT league FROM `matches`) AS m INNER JOIN `leagues` ON m.league=name_538 WHERE country!='Default';");
-   		return $countries;
+        return $countries;
     }
 
     public function getOther() {
-    	$content = Other_values::first()->get();
-    	return $content;
+        $content = Other_values::first()->get();
+        return $content;
     }
 }

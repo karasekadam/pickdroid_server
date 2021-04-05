@@ -14,7 +14,7 @@ class SoccerLeaguesDictionary extends Migration
     public function up()
     {
         // slovník přejmenování lig z 538
-        Schema::create('leagues', function (Blueprint $table) {
+        Schema::create('soccer_leagues_dictionary', function (Blueprint $table) {
             // imo není potřeba $table->id()->unique();
             // zatim neřeším $table->string('sport');
             $table->string('league_name_538')->unique();
