@@ -59,7 +59,7 @@ class General extends Controller
     public function getTopLeagues() {
         // zatím dělá shit, proč to tady je?
         $leagues = DB::table("leagues")->select("country", "name_538")->take(5)->get();
-        //DB::select("SELECT country, name_538 FROM (SELECT DISTINCT league FROM `matches`) AS m INNER JOIN `leagues` ON m.league=name_538 LIMIT 5;"); 
+        //DB::select("SELECT country, name_538 FROM (SELECT DISTINCT league FROM `matches`) AS m INNER JOIN `leagues` ON m.league=name_538 LIMIT 5;");
         return $leagues;
     }
 
