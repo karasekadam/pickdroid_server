@@ -28,7 +28,8 @@ class Matches extends Migration
             $table->float("probtie")->nullable();
             $table->boolean("changable_probtie")->default(true);
             $table->integer("priority")->default(10);
-            $table->string("country")->nullable();
+            //$table->string("country")->nullable();
+
             //$table->float("spi1")->nullable();
             //$table->float("spi2")->nullable();
             //$table->float("proj_score1")->nullable();

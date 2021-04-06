@@ -21,6 +21,7 @@ class CreateLeaguesTable extends Migration
             $table->string('name_538');
             $table->integer('538_league_id');
             $table->string('name_fortuna');
+            $table->string('our_name');
             $table->timestamps();
         });
     }
