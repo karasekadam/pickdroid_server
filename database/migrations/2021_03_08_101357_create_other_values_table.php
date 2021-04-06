@@ -14,9 +14,8 @@ class CreateOtherValuesTable extends Migration
     public function up()
     {
         Schema::create('other_values', function (Blueprint $table) {
-            $table->string('blog');
-            $table->string('about_us');
-            $table->timestamps();
+            $table->string('blog')->default("neco");
+            $table->string('about_us')->default("neco random");
         });
     }
 

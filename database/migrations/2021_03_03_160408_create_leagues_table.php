@@ -16,13 +16,12 @@ class CreateLeaguesTable extends Migration
         // soubor všech lig používaných 538
         Schema::create('leagues', function (Blueprint $table) {
             $table->id()->unique();
-            $table->string('sport');
-            $table->string('country');
-            $table->string('name_538');
-            $table->integer('538_league_id');
-            $table->string('name_fortuna');
-            $table->string('our_name');
-            $table->timestamps();
+            $table->string('sport')->nullable()->default(NULL);
+            $table->string('country')->default("Default");
+            $table->string('name_538')->nullable()->default(NULL);
+            $table->integer('538_league_id')->nullable()->default(NULL);
+            $table->string('name_fortuna')->nullable()->default(NULL);
+            $table->string('our_name')->nullable()->default(NULL);
         });
     }
 
