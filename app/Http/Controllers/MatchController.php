@@ -1,4 +1,5 @@
-<?php
+<?php // udělat: ajax dotaz na ligy změnit, aby byl podobnej jak na týmy
+// vymazat null hodnoty z hledání ajaxu
 
 namespace App\Http\Controllers;
 
@@ -6,6 +7,7 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Models\Leagues;
 use App\Models\Matches;
+use App\Models\Clubs;
 use App\Models\Other_values;
 use App\Http\Controllers\General;
 
@@ -37,33 +39,12 @@ class MatchController extends Controller
     //    return $this->check_and_redirect("search", $data);
     //}
 
-
-    public function search_match_filter(Request $request)
-    {
-        $league = request("league");
-        $id = request("id");
-        $search = request("search");    // při kliku na search hodí na domovskou s touto proměnou
-        $now = date("Y-m-d-h");
-        $day = date("d");
-        $hours = (int) date("h") + (int) request("hours");
-
-        if ($league) {
-            $matches = Matches::where("league", $league)->where("date", ">=", $now)->orderBy("priority", "asc")->orderBy("date", "asc")->get();
-        } elseif ($id) {
-            $matches = Matches::where("id", $id)->get();
-        } elseif ($search) {
-            $matches = Matches::where('team1','LIKE', $search."%")->orWhere('team1','LIKE','% '.$search."%")->orWhere('team2','LIKE', $search."%")->orWhere('team2','LIKE','% '.$search."%")->get();
-        } else {
-            $matches = Matches::where("date", ">=", $now)->orderBy("priority", "asc")->orderBy("date", "asc")->take(30)->get();
-        }
-        return Response($matches);
-    }
-
     // controller pro ajax dotaz
     public function search_match(Request $request)
     {
         if($request->ajax())
         {
+            $output="";
             $matches=Matches::where('team1','LIKE', $request->search."%")->orWhere('team2','LIKE','% '.$request->search."%")->orWhere('team2','LIKE', $request->search."%")->orWhere('team2','LIKE','% '.$request->search."%")->get();
             if($matches)
             {
@@ -78,15 +59,33 @@ class MatchController extends Controller
     }
 
     public function find_leagues(Request $data) {
-        $leagues = Leagues::select("name_538")->where("country", $data->country)->distinct()->get();
-        return Response($leagues);
+        $leagues = Leagues::select("name_538", "our_name")->where("country", $data->country)->distinct()->get();
+        $leagues_array = [];
+        foreach($leagues as $league) {
+            if (!is_null($league->our_name)) {
+                array_push($leagues_array, $league->our_name);
+            }
+            else {
+                array_push($leagues_array, $league->{'name_538'});
+            }   
+        }
+
+        $leagues_unique = array_values(array_unique($leagues_array));
+
+        return Response($leagues_unique);
     }
 
     public function find_teams(Request $data) {
-        $teams = Matches::select("team1", "team2")->where("league", $data->league)->distinct()->get();
+        $teams = Clubs::select("538_name", "our_name")->where("league", $data->league)->distinct()->get();
         $teams_array = [];
         foreach($teams as $team) {
-            array_push($teams_array, $team->team1, $team->team2);
+            if(!is_null($team->our_name)) {
+                array_push($teams_array, $team->our_name);
+            }
+            else {
+                array_push($teams_array, $team->{'538_name'});
+            }
+            
         }
 
         $teams_unique = array_values(array_unique($teams_array));

@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Scout\Searchable;
 
-class Leagues extends Model
+class Clubs extends Model
 {
-    protected $table = "leagues";
+    protected $table = "clubs";
     public $timestamps = false;
 }

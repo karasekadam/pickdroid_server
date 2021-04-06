@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Matches;
 use App\Models\Leagues;
+use App\Models\Clubs;
 use App\Models\Other_values;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
@@ -91,6 +92,12 @@ class mainControl extends Controller
             $value = $divided[0];
         }
 
+        if ($column_name == "prob1" || $column_name == "prob2" || $column_name == "prob3") {
+            if (str_contains($column_name, ",")) {
+                $column_name = str_replace(",", ".", $column);
+            }
+        }
+
         if ($column_name == "team1" or $column_name == "team2") {
             $team_name = Matches::where("id", $data->output_id)->get();
             $team_name = $team_name[0]->$column_name;
@@ -104,12 +111,17 @@ class mainControl extends Controller
 
     public function update_league(Request $data) {
         $old_league_name = $data->old_leag_name;
-        $update_matches = Matches::where("league", $old_league_name)->update(["league"=>$data->new_leag_name]);
-        $update_value = Leagues::where("name_538", $old_league_name)->update(["name_538"=>$data->new_leag_name]);
+        //$update_matches = Matches::where("league", $old_league_name)->update(["league"=>$data->new_leag_name]);
+        $update_value = Leagues::where("name_538", $old_league_name)->update(["our_name"=>$data->new_leag_name]);
         return redirect()->route('adm_home');
     }
 
     public function new_match(Request $data) {
+        $league_id = Leagues::where("name_538", $data->league)->select("538_league_id")->get();
+        if (count($league_id) == 0) {
+            $league_id = Leagues::where("our_name", $data->league)->select("538_league_id")->get();
+        }
+
         $new_match = new Matches();
         $date = $data->date;
         if (!is_null($date)) {
@@ -120,11 +132,32 @@ class mainControl extends Controller
         $new_match->team1 = $data->team;
         $new_match->team2 = $data->team2;
         $new_match->league = $data->league;
-        $new_match->country = $data->country;
         $new_match->prob1 = $data->prob1;
         $new_match->probtie = $data->probtie;
         $new_match->prob2 = $data->prob2;
+        $new_match->season = 2021;
+        $new_match->league_id = $league_id[0]->{'538_league_id'};
         $new_match->save();
+        return redirect()->route('adm_home');
+    }
+
+    public function new_team(Request $data) {
+        $new_team = new Clubs();
+        $new_team->league = $data->team_league_name;
+        $new_team->our_name = $data->new_team;
+        $new_team->save();
+        return redirect()->route('adm_home');
+    }
+
+    public function new_league(Request $data) {
+        // zatím bude custom league_id s random číslem, později to nějak vyřešíme
+        $league_id = Leagues::orderBy("id", "DESC")->take(1)->select("id")->get();
+        $new_league = new Leagues();
+        $new_league->sport = "Football";
+        $new_league->country = $data->leag_country_name;
+        $new_league->our_name = $data->new_league;
+        $new_league->{'538_league_id'} = $league_id[0]->id;
+        $new_league->save();
         return redirect()->route('adm_home');
     }
 }

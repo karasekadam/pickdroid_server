@@ -72,6 +72,9 @@
                     
                     if (check == 0) {
                         $("#date_hidden").val($("#add_time").val());
+                        $("#prob1_hidden").val(prob1);
+                        $("#probtie_hidden").val(probtie);
+                        $("#prob2_hidden").val(prob2);
                         $("#form_new_match").submit();
                     }
                 });
@@ -227,7 +230,17 @@
                             <input type="hidden" value="{{$league->name_538}}">
                             <div>
                                 <p class="font-weight-light pt-2 pb-2 mt-0 mb-0 ml-2">
-                                    <a href="/admin_home?league={{$league->name_538}}" style="color: white; text-decoration: none">{{$league->name_538}}</a>
+
+                                    @if (is_null($league->our_name))
+                                    <a href="/admin_home?league={{$league->name_538}}" style="color: white; text-decoration: none">
+                                    {{$league->name_538}}
+                                    </a>
+                                    @else
+                                    <a href="/admin_home?league={{$league->our_name}}" style="color: white; text-decoration: none">
+                                    {{$league->our_name}}
+                                    </a>
+                                    @endif
+
                                     <i class="fa fa-pencil ml-2 pencil_league" style="color: white" value="0">
                                     </i>
                                     <input type="text" class="text_field" name="new_leag_input" style="display: none; height: 20%" size="12">
@@ -249,8 +262,17 @@
                                 <input type="hidden" value="{{$league->name_538}}">
                                 <div>
                                     <p class="sub_{{$country->country}} ml-3 mt-1 pt-1 pb-1" style="display: none; color: white">
-                                        <a href="/admin_home?league={{$league->name_538}}" style="text-decoration: none; color: white">{{$league->name_538}}</a>
-                                    
+
+                                        @if (is_null($league->our_name))
+                                        <a href="/admin_home?league={{$league->name_538}}" style="text-decoration: none; color: white">
+                                        {{$league->name_538}}
+                                        </a>
+                                        @else
+                                        <a href="/admin_home?league={{$league->our_name}}" style="text-decoration: none; color: white">
+                                        {{$league->our_name}}
+                                        </a>
+                                        @endif
+
                                     <i class="fa fa-pencil ml-2 pencil_league" style="color: white" value="0"></i>
                                     <input type="text" class="text_field" name="new_leag_input" style="display: none; height: 20%" size="12">
                                     <button type="button" class="btn btn-sm leag_submit" style="background-color: white; margin-bottom: 2%; display: none" value="date">Ok</button>

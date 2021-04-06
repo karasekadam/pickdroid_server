@@ -52,13 +52,13 @@ class General extends Controller
     public function getLeagues() {
         // vezme pouze aktuální zápasy z matches a zkombinuje se se státy přes leagues
         // možná není čistej INNER dobře, možná left když nebude zapsaný stát??
-        $leagues = DB::select("SELECT country, name_538 FROM (SELECT DISTINCT league FROM `matches`) AS m INNER JOIN `leagues` ON m.league=name_538;"); //Leagues::select("country", "name_538")->get();
+        $leagues = DB::select("SELECT country, name_538, our_name FROM (SELECT DISTINCT league, league_id FROM `matches`) AS m INNER JOIN `leagues` ON m.league_id=538_league_id;"); //Leagues::select("country", "name_538")->get();
         return $leagues;
     }
 
     public function getTopLeagues() {
         // zatím dělá shit, proč to tady je?
-        $leagues = DB::table("leagues")->select("country", "name_538")->take(5)->get();
+        $leagues = DB::table("leagues")->select("country", "name_538", "our_name")->take(5)->get();
         //DB::select("SELECT country, name_538 FROM (SELECT DISTINCT league FROM `matches`) AS m INNER JOIN `leagues` ON m.league=name_538 LIMIT 5;");
         return $leagues;
     }

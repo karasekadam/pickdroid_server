@@ -79,7 +79,7 @@
                     data:{'country': value},
                     success:function(data){
                         for (var a = 0; a < data.length; a++) {
-                            $("#league-list").append("<p class='drop_item'>" + data[a].name_538 + "</p>");
+                            $("#league-list").append("<p class='drop_item'>" + data[a] + "</p>");
                             }
                         }
                     });
@@ -153,6 +153,9 @@
                 <input type="hidden" name="league" id="league_hidden">
                 <input type="hidden" name="team" id="team_hidden">
                 <input type="hidden" name="team2" id="team_hidden2">
+                <input type="hidden" name="prob1" id="prob1_hidden">
+                <input type="hidden" name="probtie" id="probtie_hidden">
+                <input type="hidden" name="prob2" id="prob2_hidden">
                 {!! Form::close() !!}
 
                     <tr style="display: none" id="new_match">
