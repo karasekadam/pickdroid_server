@@ -5,7 +5,6 @@ import datetime
 # downloads actuall matches
 data = requests.get("https://projects.fivethirtyeight.com/soccer-api/club/spi_matches_latest.csv").content
 print("downloaded")
-print(type(data))
 data = data.decode("utf-8")
 data = data.split("\n")
 for row in range(len(data)):
@@ -29,8 +28,9 @@ for i in data:
 
 
 # connects to database
-cnx = mysql.connector.connect(user='kokot', password='kokot123', host='mysql.dangrb.dreamhosters.com', database='pickdroid_db')
-# cnx = mysql.connector.connect(user='root', password='greplpekl', host='127.0.0.1', database='pickdroid', auth_plugin='mysql_native_password')
+print("connecting to the database")
+# cnx = mysql.connector.connect(user='kokot', password='kokot123', host='mysql.dangrb.dreamhosters.com', database='pickdroid_db')
+cnx = mysql.connector.connect(user='pallas', password='greplpekl', host='127.0.0.1', database='pickdroid', auth_plugin='mysql_native_password')  # , auth_plugin='mysql_native_password'
 
 print("connected")
 cursor = cnx.cursor()
@@ -44,7 +44,6 @@ result = cursor.fetchall()
 
 cursor.execute("SELECT * FROM `leagues`")
 leagues_all = cursor.fetchall()
-print(leagues_all)
 
 # set of prime keys from existing records
 relevant = set()
@@ -60,7 +59,7 @@ for i in decimated:
     if len(i) == 23:
         if i[3] not in leagues:
             leagues.add(i[3])
-            cursor.execute('INSERT INTO leagues(sport, country, name_538, name_fortuna, 538_league_id) VALUES ("Football", "Default", "{}", "-");'.format(i[3], i[2]))
+            cursor.execute('INSERT INTO leagues(sport, country, name_538, name_fortuna, 538_league_id) VALUES ("Football", "Default", "{}", "-", "{}");'.format(i[3], i[2]))
 
         # makes datetime object
         day = i[1].split("-")
