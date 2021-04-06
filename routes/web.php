@@ -27,7 +27,11 @@ Route::get('/admin_home', "MatchController@adm_home")->name("adm_home");
 
 Route::get('/admin_aboutus', "MatchController@adm_aboutus")->name("adm_aboutus");
 
+// ajax dotaz
 Route::get('/search_match','MatchController@search_match')->name("search_match");
+
+// filtr dotaz
+Route::get('/search_match_filter','MatchController@search_match_filter')->name("search_match_filter");
 
 Route::get('/find_countries','MatchController@find_countries')->name("find_countries");
 
@@ -36,8 +40,6 @@ Route::get('/find_leagues','MatchController@find_leagues')->name("find_leagues")
 Route::get('/find_teams','MatchController@find_teams')->name("find_teams");
 
 Route::get('/admin_add','MatchController@adm_add')->name("adm_add");
-
-//Route::get('ajax-autocomplete-search', "App\Http\Controllers\MatchController@search");
 
 Route::post("/log_check", 'mainControl@check_login');
 
@@ -53,4 +55,3 @@ Route::post("/update_league", "mainControl@update_league");
 
 Route::post("/logout", "mainControl@logout");
 
-//Route::get('/{sport}/{league}',"App\Http\Controllers\MatchController@league");
