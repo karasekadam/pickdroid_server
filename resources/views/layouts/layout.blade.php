@@ -16,14 +16,72 @@
         <link rel="stylesheet" href="css/pickdroid.css">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <style>
+            .dropbtn {
+                position: absolute;
+                left: 0px;
+                background-color: #424242;
+                color: white;
+                width: 124px;
+                height: 24px;
+                border: none;
+                cursor: pointer;
+            }
+            .dropbtn:hover, .dropbtn:focus {
+                background-color: #2980B9;
+                outline: none;
+            }
+            .dropdown {
+                position: relative;
+                display: inline-block;
+            }
+            .dropdown-content {
+                display: none;
+                position: absolute;
+                background-color: #f1f1f1;
+                min-width: 160px;
+                overflow: auto;
+                box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+                z-index: 1000;
+            }
+            .dropdown-content button {
+                color: black;
+                padding: 12px 16px;
+                text-decoration: none;
+                display: block;
+                width: 100%;
+            }
+            .dropdown a:hover {background-color: #ddd;}
+
+            .show {display: block;}
+        </style>
     </head>
 
     <body>
         <script>
+            // funkce filtru
+            function filter() {
+                document.getElementById("myDropdown").classList.toggle("show");
+            }
+
+            // hides dropdown-content
+            window.onclick = function(event) {
+                if (!event.target.matches('.dropbtn')) {
+                    var dropdowns = document.getElementsByClassName("dropdown-content");
+                    var i;
+                    for (i = 0; i < dropdowns.length; i++) {
+                        var openDropdown = dropdowns[i];
+                        if (openDropdown.classList.contains('show')) {
+                            openDropdown.classList.remove('show');
+                        }
+                    }
+                }
+            }
+
             // funkce vyhledávacího tlačíka
             function search_site() {
                 name = document.getElementById("search").value
-                window.location.replace("http://www.dangrb.dreamhosters.com/?search=" + name); // http://127.0.0.1:8000/?search=
+                window.location.replace("http://127.0.0.1:8000/?search=" + name); // http://www.dangrb.dreamhosters.com/?search=
             }
 
             $(document).ready(function() {
@@ -37,6 +95,11 @@
                     $(".sub_"+value).slideToggle();
                 });
 
+                // filter
+                //let filter = document.getElementById("2");
+                //$('#filter').on('keyup', search_func(search));
+                // filter
+
                 let search = document.getElementById("search");
                 let search_mob = document.getElementById("search_mob");
                 window.search = search; // Put the element in window so we can access it easily later
@@ -44,7 +107,7 @@
 
                 // ajax dotaz k searchboxu na keyup
                 $('#search').on('keyup', search_func(search));
-                $('#search_mob').on('keyup', search_func(search_mob));
+                $('#search_mob').on('keyup', search_func(search_mob)); // proč to tady je??? zakomentované search pořád funguje
 
                 function search_func(elem) {
                     return function(e) {
@@ -75,7 +138,7 @@
                                     for (let item in data) {
                                         // vytvoří link pro každý výsledek, který dostal od serveru
                                         let opt = document.createElement("a");
-                                        opt.setAttribute("href", "http://www.dangrb.dreamhosters.com/?id=" + data[item].id + "'") // http://127.0.0.1:8000/?id=
+                                        opt.setAttribute("href", "http://127.0.0.1:8000/?id=" + data[item].id + "'") // http://www.dangrb.dreamhosters.com/?id=
                                         str = data[item].team1 + " - " + data[item].team2;
                                         opt.innerHTML = str;
                                         selector.appendChild(opt);
@@ -99,9 +162,36 @@
                             }
                         });
                     };
-
                 }
-            });
+            })
+
+            // funkce zajišťující filter
+            function content_filter(hours) {
+                // vytvoří ajax dotaz
+                let xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    // funkce obstarávající odpověď dotazu
+                    if (this.readyState == 4 && this.status == 200) {
+                        let myArr = JSON.parse(this.responseText);
+                        let output = ""
+                        for (let i = 0; i < myArr.length; i++) {
+                            output += '<tr> <td class="date d-none d-md-table-cell align-middle pl-4"><span class="match_date">' + myArr[i].date + '</span><br>11:11</td>' +
+                            '<td class="match d-none d-md-table-cell align-middle pt-1 pb-1"><img src="img/logo.png" class="web_logo" alt="logo týmu">' + myArr[i].team1 +' - <img src="img/logo.png" class="web_logo" alt="logo týmu">' + myArr[i].team2 +'</td>' +
+                            '<td class="match d-md-none pt-1 pb-1"><img src="img/logo.png" class="mob_logo" alt="logo týmu">' + myArr[i].team1 +'<br><img src="img/logo.png" class="mob_logo" alt="logo týmu">' + myArr[i].team2 +'<br><span class="match_date">' + myArr[i].date +'</span>, 11:11</td>' +
+                            '<td class="league d-none d-md-table-cell align-middle"><img src="img/logo.png" class="web_logo ml-3" alt="logo ligy"></td>' +
+                            '<td class="rate text-center align-md-middle"><div class="rate_pad"><b>' + myArr[i].prob1 +'<br>1.11</b></div></td>' +
+                            '<td class="rate text-center align-md-middle"><div class="rate_pad"><b>' + myArr[i].probtie +'<br>1.11</b></div></td>' +
+                            '<td class="rate text-center align-md-middle"><div class="rate_pad"><b>' + myArr[i].prob2 +'<br>1.11</b></div></td></tr>'
+                        }
+                        document.getElementsByTagName("tbody")[0].innerHTML = output;
+                    }
+                };
+                let href = window.location.href.split("/");
+                let last = href[- 1];
+                console.log(last);
+                xhttp.open("GET", "http://localhost:8000/search_match_filter?" + last + "&hours=" + hours, true);
+                xhttp.send();
+            }
         </script>
 
         <div class="container-fluid">
@@ -132,6 +222,14 @@
 
                 <div class="col-md-10 d-none d-sm-none d-md-block topbar">
                     <div class="row h-100 align-items-center">
+                        <div class="dropdown">
+                            <button onclick="filter()" class="dropbtn">Filter &#9660;</button>
+                            <div id="myDropdown" class="dropdown-content">
+                                <button onclick="content_filter('2')">2 hours</button>
+                                <button onclick="content_filter('4')">4 hours</button>
+                                <button onclick="content_filter('24')">today</button>
+                            </div>
+                        </div>
                         <div class="col-xl-5 col-lg-4 col-md-4 offset-lg-3 offset-md-1">
                             <form class="form-inline" action="/action_page.php" style="margin-left: 10%">
                                 <div class="form-group" style="">
