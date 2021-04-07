@@ -61,7 +61,7 @@ class MatchController extends Controller
         if($request->ajax())
         {
             $output="";
-            $matches=Matches::where('team1','LIKE', $request->search."%")->orWhere('team2','LIKE','% '.$request->search."%")->orWhere('team2','LIKE', $request->search."%")->orWhere('team2','LIKE','% '.$request->search."%")->get();
+            $matches=Matches::where('team1','LIKE', "% ".$request->search."%")->orWhere('team2','LIKE','% '.$request->search."%")->orWhere('team2','LIKE', $request->search."%")->orWhere('team2','LIKE','% '.$request->search."%")->get();
             if($matches)
             {
                 return Response($matches); // $output
