@@ -37,7 +37,12 @@ Route::get('/find_teams','MatchController@find_teams')->name("find_teams");
 
 Route::get('/admin_add','MatchController@adm_add')->name("adm_add");
 
-//Route::get('ajax-autocomplete-search', "App\Http\Controllers\MatchController@search");
+// ajax dotaz
+Route::get('/search_match','MatchController@search_match')->name("search_match");
+
+// filtr dotaz
+Route::get('/search_match_filter','MatchController@search_match_filter')->name("search_match_filter");
+
 
 Route::post("/log_check", 'mainControl@check_login');
 
