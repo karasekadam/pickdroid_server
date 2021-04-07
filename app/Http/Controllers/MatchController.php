@@ -34,11 +34,27 @@ class MatchController extends Controller
 
     }
 
-    // už asi není potřeba, pro jistotu nechávám
-    //public function search(Request $data) {
-    //    return $this->check_and_redirect("search", $data);
-    //}
+    // ajax dotaz pro filter
+    public function search_match_filter(Request $request)
+    {
+        $league = request("league");
+        $id = request("id");
+        $search = request("search");    // při kliku na search hodí na domovskou s touto proměnou
+        $now = date("Y-m-d");
+        $day = date("d");
+        $hours = (int) date("h") + (int) request("hours");
 
+        if ($league) {
+            $matches = Matches::where("league", $league)->where("date", ">=", $now)->orderBy("priority", "asc")->orderBy("date", "asc")->get();
+        } elseif ($id) {
+            $matches = Matches::where("id", $id)->get();
+        } elseif ($search) {
+            $matches = Matches::where('team1','LIKE', $search."%")->orWhere('team1','LIKE','% '.$search."%")->orWhere('team2','LIKE', $search."%")->orWhere('team2','LIKE','% '.$search."%")->get();
+        } else {
+            $matches = Matches::where("date", ">=", $now)->orderBy("priority", "asc")->orderBy("date", "asc")->take(30)->get();
+        }
+        return Response($matches);
+    }
     // controller pro ajax dotaz
     public function search_match(Request $request)
     {
@@ -67,7 +83,7 @@ class MatchController extends Controller
             }
             else {
                 array_push($leagues_array, $league->{'name_538'});
-            }   
+            }
         }
 
         $leagues_unique = array_values(array_unique($leagues_array));
@@ -85,7 +101,7 @@ class MatchController extends Controller
             else {
                 array_push($teams_array, $team->{'538_name'});
             }
-            
+
         }
 
         $teams_unique = array_values(array_unique($teams_array));
