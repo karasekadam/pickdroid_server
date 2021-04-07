@@ -192,12 +192,12 @@
 
                 <div class="col-md-10 d-none d-sm-none d-md-block topbar">
                     <div class="row h-100 align-items-center">
-                        <div class="col-md-3">
+                        <div class="col-xl-3 col-lg-2">
                             <button type="button" class="btn btn-dark nav-btn" id="add_match">Přidat zápas</button>
                             <button type="button" class="btn btn-dark nav-btn" id="add_done" style="display: none">Hotovo</button>
                         </div>
-                        <div class="col-md-4">
-                            <form class="form-inline" action="/action_page.php" style="margin-left: 10%">
+                        <div class="col-xl-5 col-lg-6">
+                            <form class="form-inline" action="/action_page.php">
                                 <div class="form-group" style="">
                                     <input type="text" class="form-control" placeholder="Search matches.." name="search" id="search" size="40">
                                     <button type="button" class="btn btn-outline-dark" style="margin-left: 0.5em"><i class="fa fa-search"></i></button>
@@ -206,7 +206,7 @@
                             </form>
                         </div>
 
-                        <div class="col-md-5">
+                        <div class="col-xl-4 col-lg-4">
                             {!! Form::open(['action' => 'mainControl@logout', 'method' => 'POST']) !!}
                             <button type="submit" class="btn btn-dark float-right nav-btn">Odhlásit se</button>
                             {!! Form::close() !!}

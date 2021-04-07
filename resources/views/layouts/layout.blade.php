@@ -237,7 +237,7 @@
 
                 <div class="col-md-10 d-none d-sm-none d-md-block topbar">
                     <div class="row h-100 align-items-center">
-                        <div class="col-xl-3 col-lg-3">
+                        <div class="col-xl-3 col-lg-2 col-md-1">
                             <div class="dropdown">
                                 <button onclick="filter()" class="btn btn-dark dropbtn">Filter &#9660;</button>
                                 <!--<div id="myDropdown" class="dropdown-content">
@@ -252,9 +252,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-xl-5 col-lg-4 col-md-4">
+                        <div class="col-xl-5 col-lg-6 col-md-4">
                             
-                            <form class="form-inline" action="/action_page.php" style="margin-left: 10%">
+                            <form class="form-inline" action="/action_page.php">
                                 <div class="form-group">
                                     <input type="text" class="form-control" placeholder="Search matches.." id="search" name="search" size="40">
                                     <button type="button" onclick="search_site()" class="btn btn-outline-dark" style="margin-left: 0.5em"><i class="fa fa-search"></i></button>
@@ -263,7 +263,7 @@
                             </form>
                         </div>
 
-                        <div class="col-xl-4 col-lg-5 col-md-7">
+                        <div class="col-xl-4 col-lg-4 col-md-7">
                             <a href="/login"><button type="button" class="btn btn-dark float-right nav-btn">Login</button></a>
                             <a href="/aboutus"><button type="button" class="btn btn-dark float-right nav-btn">About us</button></a>
                             <a href="/blog"><button type="button" class="btn btn-dark float-right nav-btn">Blog</button></a>
