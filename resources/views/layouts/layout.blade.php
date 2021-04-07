@@ -183,6 +183,12 @@
                         let output = ""
                         for (let i = 0; i < myArr.length; i++) {
                             let date = myArr[i].date.split("-")
+                            let match_time = new Date(parseInt(date[0]), parseInt(date[1]) - 1, parseInt(date[2]) - 1, parseInt((myArr[i].time)) ? (myArr[i].time) : 0);
+                            let now = new Date();
+                            let until = new Date(now.getTime() + hours*3600000);
+                            if (match_time > until) {
+                                continue;
+                            }
                             let format = date[2] + "." + date[1]
                             output += '<tr> <td class="date d-none d-md-table-cell align-middle pl-4"><span class="match_date">' + format + '</span><br>11:11</td>' +
                                 '<td class="match d-none d-md-table-cell align-middle pt-1 pb-1"><img src="img/logo.png" class="web_logo" alt="logo týmu">' + myArr[i].team1 +' - <img src="img/logo.png" class="web_logo" alt="logo týmu">' + myArr[i].team2 +'</td>' +
@@ -196,9 +202,9 @@
                     }
                 };
                 let href = window.location.href.split("/");
-                let last = href[- 1];
+                let last = href[href.length- 1];
                 console.log(last);
-                xhttp.open("GET", "http://localhost:8000/search_match_filter?" + last + "&hours=" + hours, true);
+                xhttp.open("GET", "http://www.dangrb.dreamhosters.com/search_match_filter" + last + "&hours=" + hours, true);
                 xhttp.send();
             }
         </script>
