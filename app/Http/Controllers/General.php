@@ -42,7 +42,7 @@ class General extends Controller
         } elseif ($id) {
             $matches = Matches::where("id", $id)->get();
         } elseif ($search) {
-            $matches = Matches::where('team1','LIKE', $search."%")->orWhere('team1','LIKE','% '.$search."%")->orWhere('team2','LIKE', $search."%")->orWhere('team2','LIKE','% '.$search."%")->get();
+            $matches = Matches::where('team1','LIKE', "% ".$search."%")->orWhere('team1','LIKE','% '.$search."%")->orWhere('team2','LIKE', "% ".$search."%")->orWhere('team2','LIKE','% '.$search."%")->get();
         } else {
             $matches = Matches::where("date", ">=", $now)->orderBy("priority", "asc")->orderBy("date", "asc")->take(30)->get();
         }
