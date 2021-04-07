@@ -183,7 +183,7 @@
                         let output = ""
                         for (let i = 0; i < myArr.length; i++) {
                             let date = myArr[i].date.split("-")
-                            let match_time = new Date(parseInt(date[0]), parseInt(date[1]) - 1, parseInt(date[2]) - 1, parseInt((myArr[i].time)) ? (myArr[i].time) : 0);
+                            let match_time = new Date(parseInt(date[0]), parseInt(date[1]) - 1, parseInt(date[2]), parseInt((myArr[i].time)) ? (myArr[i].time) : 0);
                             let now = new Date();
                             let until = new Date(now.getTime() + hours*3600000);
                             if (match_time > until) {
