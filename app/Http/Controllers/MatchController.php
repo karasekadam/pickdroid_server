@@ -92,7 +92,19 @@ class MatchController extends Controller
     }
 
     public function find_teams(Request $data) {
-        $teams = Clubs::select("538_name", "our_name")->where("league", $data->league)->distinct()->get();
+        $leagues = Leagues::where("name_538", $data->league)->select("name_538")->get();
+
+        if (count($leagues) == 0) {
+            $leagues = Leagues::where("our_name", $data->league)->select("name_538", "our_name")->get();
+        }
+
+        if (is_null($leagues[0]->name_538)) {
+            $final = $leagues[0]->our_name;
+        } else {
+            $final = $leagues[0]->name_538;
+        }
+
+        $teams = Clubs::select("538_name", "our_name")->where("league", $final)->distinct()->get();
         $teams_array = [];
         foreach($teams as $team) {
             if(!is_null($team->our_name)) {

@@ -136,7 +136,7 @@
                                 for (let item in data) {
                                     // vytvoří link pro každý výsledek, který dostal od serveru
                                     let opt = document.createElement("a");
-                                    opt.setAttribute("href", "#") //http://127.0.0.1:8002/?id=" + data[item].id + "'"
+                                    opt.setAttribute("href", "http://www.dangrb.dreamhosters.com/?id=" + data[item].id + "'");
                                     str = data[item].team1 + " - " + data[item].team2;
                                     opt.innerHTML = str;
                                     selector.appendChild(opt);
@@ -236,7 +236,11 @@
                                     {{$league->name_538}}
                                     </a>
                                     @else
-                                    <a href="/admin_home?league={{$league->our_name}}" style="color: white; text-decoration: none">
+                                        @if (is_null($league->name_538))
+                                        <a href="/?league={{$league->our_name}}" style="color: white; text-decoration: none">
+                                        @else
+                                        <a href="/?league={{$league->name_538}}" style="color: white; text-decoration: none">
+                                        @endif
                                     {{$league->our_name}}
                                     </a>
                                     @endif
@@ -268,7 +272,11 @@
                                         {{$league->name_538}}
                                         </a>
                                         @else
-                                        <a href="/admin_home?league={{$league->our_name}}" style="text-decoration: none; color: white">
+                                            @if(is_null($league->name_538))
+                                            <a href="/?league={{$league->our_name}}" style="text-decoration: none; color: white">
+                                            @else
+                                            <a href="/?league={{$league->name_538}}" style="text-decoration: none; color: white">
+                                            @endif
                                         {{$league->our_name}}
                                         </a>
                                         @endif

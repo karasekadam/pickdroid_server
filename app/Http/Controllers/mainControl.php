@@ -101,7 +101,20 @@ class mainControl extends Controller
         if ($column_name == "team1" or $column_name == "team2") {
             $team_name = Matches::where("id", $data->output_id)->get();
             $team_name = $team_name[0]->$column_name;
-            $update_value = Matches::where($column_name, $team_name)->select($column_name)->update([$column_name=>$value]);
+            $update_team1 = Matches::where("team1", $team_name)->select("team1")->update(["team1"=>$value]);
+            $update_team2 = Matches::where("team2", $team_name)->select("team2")->update(["team2"=>$value]);
+            $clubs = Clubs::where("538_name", $team_name)->get();
+            $name_col = "538_name";
+            if (count($clubs) == 0) {
+                $clubs = Clubs::where("our_name", $team_name)->get();
+                $name_col = "our_name";
+            }
+
+
+
+            $update_clubs = Clubs::where($name_col, $team_name)->select("our_name")->update(["our_name"=>$value]);
+
+            
         } else {
             $update_value = Matches::where("id", $data->output_id)->update([$column_name=>$value]);
         }

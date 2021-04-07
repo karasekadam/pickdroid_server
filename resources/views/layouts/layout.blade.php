@@ -88,7 +88,7 @@
             // funkce vyhledávacího tlačíka
             function search_site() {
                 name = document.getElementById("search").value
-                window.location.replace("http://127.0.0.1:8000/?search=" + name); // http://www.dangrb.dreamhosters.com/?search=
+                window.location.replace("http://www.dangrb.dreamhosters.com/?search=" + name); // 
             }
 
             $(document).ready(function() {
@@ -145,7 +145,7 @@
                                     for (let item in data) {
                                         // vytvoří link pro každý výsledek, který dostal od serveru
                                         let opt = document.createElement("a");
-                                        opt.setAttribute("href", "http://127.0.0.1:8000/?id=" + data[item].id + "'") // http://www.dangrb.dreamhosters.com/?id=
+                                        opt.setAttribute("href", "http://www.dangrb.dreamhosters.com/?id=" + data[item].id + "'");
                                         str = data[item].team1 + " - " + data[item].team2;
                                         opt.innerHTML = str;
                                         selector.appendChild(opt);
@@ -283,11 +283,23 @@
                         <p class="h3 font-weight-light text-md-left" style="color: #FF8000; margin-bottom: 2%; margin-left: 2%">Top leagues</p>
                         @foreach($top_leagues as $league)
                         <div class="sidefont">
+                            @if (is_null($league->our_name))
                             <a href="/?league={{$league->name_538}}">
                                 <p class="font-weight-light pt-2 pb-2 mt-0 mb-0 ml-2">
                                     {{$league->name_538}}
                                 </p>
                             </a>
+                            @else
+                                @if (is_null($league->name_538))
+                                <a href="/?league={{$league->our_name}}">
+                                @else
+                                <a href="/?league={{$league->name_538}}">
+                                @endif
+                                <p class="font-weight-light pt-2 pb-2 mt-0 mb-0 ml-2">
+                                    {{$league->our_name}}
+                                </p>
+                            </a>  
+                            @endif
                         </div>
                         @endforeach
                     </div>
@@ -298,13 +310,25 @@
                             <p onclick="" class="font-weight-light pt-2 pb-2 mt-0 mb-0 ml-2 doToggle" id="{{$country->country}}">{{$country->country}}</p>
                         </div>
                             @foreach($leagues as $league)
-                                @if ($league->country == $country->country)
+                               @if ($league->country == $country->country)
                                 <div class="sidefont">
+                                    @if (is_null($league->our_name))
                                     <a href="/?league={{$league->name_538}}">
                                         <p class="sub_{{$country->country}} ml-3 mt-1 pt-1 pb-1" style="display: none; color: white">
                                             {{$league->name_538}}
                                         </p>
                                     </a>
+                                    @else
+                                    @if(is_null($league->name_538))
+                                    <a href="/?league={{$league->our_name}}">
+                                    @else
+                                    <a href="/?league={{$league->name_538}}">
+                                    @endif
+                                        <p class="sub_{{$country->country}} ml-3 mt-1 pt-1 pb-1" style="display: none; color: white">
+                                            {{$league->our_name}}
+                                        </p>
+                                    </a>    
+                                    @endif
                                 </div>
                                 @endif
 
