@@ -182,13 +182,15 @@
                         let myArr = JSON.parse(this.responseText);
                         let output = ""
                         for (let i = 0; i < myArr.length; i++) {
-                            output += '<tr> <td class="date d-none d-md-table-cell align-middle pl-4"><span class="match_date">' + myArr[i].date + '</span><br>11:11</td>' +
-                            '<td class="match d-none d-md-table-cell align-middle pt-1 pb-1"><img src="img/logo.png" class="web_logo" alt="logo týmu">' + myArr[i].team1 +' - <img src="img/logo.png" class="web_logo" alt="logo týmu">' + myArr[i].team2 +'</td>' +
-                            '<td class="match d-md-none pt-1 pb-1"><img src="img/logo.png" class="mob_logo" alt="logo týmu">' + myArr[i].team1 +'<br><img src="img/logo.png" class="mob_logo" alt="logo týmu">' + myArr[i].team2 +'<br><span class="match_date">' + myArr[i].date +'</span>, 11:11</td>' +
-                            '<td class="league d-none d-md-table-cell align-middle"><img src="img/logo.png" class="web_logo ml-3" alt="logo ligy"></td>' +
-                            '<td class="rate text-center align-md-middle"><div class="rate_pad"><b>' + myArr[i].prob1 +'<br>1.11</b></div></td>' +
-                            '<td class="rate text-center align-md-middle"><div class="rate_pad"><b>' + myArr[i].probtie +'<br>1.11</b></div></td>' +
-                            '<td class="rate text-center align-md-middle"><div class="rate_pad"><b>' + myArr[i].prob2 +'<br>1.11</b></div></td></tr>'
+                            let date = myArr[i].date.split("-")
+                            let format = date[2] + "." + date[1]
+                            output += '<tr> <td class="date d-none d-md-table-cell align-middle pl-4"><span class="match_date">' + format + '</span><br>11:11</td>' +
+                                '<td class="match d-none d-md-table-cell align-middle pt-1 pb-1"><img src="img/logo.png" class="web_logo" alt="logo týmu">' + myArr[i].team1 +' - <img src="img/logo.png" class="web_logo" alt="logo týmu">' + myArr[i].team2 +'</td>' +
+                                '<td class="match d-md-none pt-1 pb-1"><img src="img/logo.png" class="mob_logo" alt="logo týmu">' + myArr[i].team1 +'<br><img src="img/logo.png" class="mob_logo" alt="logo týmu">' + myArr[i].team2 +'<br><span class="match_date">' + format +'</span>, 11:11</td>' +
+                                '<td class="league d-none d-md-table-cell align-middle"><img src="img/logo.png" class="web_logo ml-3" alt="logo ligy"></td>' +
+                                '<td class="rate text-center align-md-middle"><div class="rate_pad"><b>' + myArr[i].prob1 +'<br>1.11</b></div></td>' +
+                                '<td class="rate text-center align-md-middle"><div class="rate_pad"><b>' + myArr[i].probtie +'<br>1.11</b></div></td>' +
+                                '<td class="rate text-center align-md-middle"><div class="rate_pad"><b>' + myArr[i].prob2 +'<br>1.11</b></div></td></tr>'
                         }
                         document.getElementsByTagName("tbody")[0].innerHTML = output;
                     }
