@@ -49,7 +49,7 @@ class MatchController extends Controller
         } elseif ($id) {
             $matches = Matches::where("id", $id)->get();
         } elseif ($search) {
-            $matches = Matches::where('team1','LIKE', "% ".$search."%")->orWhere('team1','LIKE','% '.$search."%")->orWhere('team2','LIKE', "% ".$search."%")->orWhere('team2','LIKE','% '.$search."%")->get();
+            $matches = Matches::where('team1','LIKE', "% ".$search."%")->orWhere('team1','LIKE',$search."%")->orWhere('team2','LIKE', "% ".$search."%")->orWhere('team2','LIKE',$search."%")->get();
         } else {
             $matches = Matches::where("date", ">=", $now)->orderBy("priority", "asc")->orderBy("date", "asc")->take(30)->get();
         }
@@ -61,7 +61,7 @@ class MatchController extends Controller
         if($request->ajax())
         {
             $output="";
-            $matches=Matches::where('team1','LIKE', "% ".$request->search."%")->orWhere('team2','LIKE','% '.$request->search."%")->orWhere('team2','LIKE', "% ".$request->search."%")->orWhere('team2','LIKE','% '.$request->search."%")->get();
+            $matches=Matches::where('team1','LIKE', "% ".$request->search."%")->orWhere('team1','LIKE',$request->search."%")->orWhere('team2','LIKE', $request->search."%")->orWhere('team2','LIKE','% '.$request->search."%")->get();
             if($matches)
             {
                 return Response($matches); // $output
