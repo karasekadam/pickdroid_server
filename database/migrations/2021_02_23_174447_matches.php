@@ -23,11 +23,9 @@ class Matches extends Migration
             $table->string('team1');
             $table->string('team2');
             $table->float("prob1")->nullable();
-            $table->boolean("changable_prob1")->default(true);
             $table->float("prob2")->nullable();
-            $table->boolean("changable_prob2")->default(true);
             $table->float("probtie")->nullable();
-            $table->boolean("changable_probtie")->default(true);
+            $table->boolean("changeable")->default(true);
             $table->integer("priority")->default(10);
 
             //$table->float("spi1")->nullable();
