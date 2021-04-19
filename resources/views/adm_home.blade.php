@@ -23,6 +23,17 @@
                 $(this).parent().children("b:eq(" + pencil_num + ")").css("display", "none");
             	$(this).parent().children("i:eq(" + pencil_num + ")").css("display", "none");
             	$(this).parent().children("button:eq(" + pencil_num + ")").css("display", "inline");
+                var date = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
+                var formatted = (new Date(Date.now() - date)).toISOString().slice(0, -1);
+                var remove = formatted.slice(-7);
+                var final = formatted.replace(remove, "");
+                var result = final.split("T");
+                var name = $(this).parent().children(".text_field:eq(" + pencil_num + ")").attr("name");
+                if (name == "date") {
+                    $(this).parent().children(".text_field:eq(" + pencil_num + ")").val(result[0]);
+                } else if (name == "time") {
+                    $(this).parent().children(".text_field:eq(" + pencil_num + ")").val(result[1]);
+                }
             });
 
             $(".ok").click(function() {
@@ -127,6 +138,13 @@
                 var add = $(this).parent().parent().children("button").attr("value");
                 $("#team_hidden" + add).attr("value", value);
                 $("#team_btn" + add).text(value);
+                if (add == "") {
+                    $("#team-list2 p.drop_item").css("display", "block");
+                    $("#team-list2 p.drop_item:contains('"+value+"')").css("display", "none");
+                } else if (add == "2") {
+                    $("#team-list p.drop_item").css("display", "block");
+                    $("#team-list p.drop_item:contains('"+value+"')").css("display", "none");
+                }
             }
 
      });

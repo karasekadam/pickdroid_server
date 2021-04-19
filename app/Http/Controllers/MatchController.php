@@ -27,11 +27,18 @@ class MatchController extends Controller
         $content = $this->general->getOther();
 
         if ($user == "admin" && $route != "login") {
+            if ($route == "add") {
+                $team_country = $data->session()->get("team_country");
+                $leag_country = $data->session()->get("leag_country");
+                $league = $data->session()->get("league");
+
+                return view("adm_" . $route, ["leagues"=>$leagues, "top_leagues"=>$top_leagues, "countries"=>$countries, "matches"=>$matches, "content"=>$content, "team_country"=>$team_country, "leag_country"=>$leag_country, "league"=>$league]);
+            }
+
             return view("adm_" . $route, ["leagues"=>$leagues, "top_leagues"=>$top_leagues, "countries"=>$countries, "matches"=>$matches, "content"=>$content]);
         } else {
             return view($route, ["leagues"=>$leagues, "top_leagues"=>$top_leagues, "countries"=>$countries, "matches"=>$matches, "content"=>$content]);
         }
-
     }
 
     // ajax dotaz pro filter
@@ -154,4 +161,7 @@ class MatchController extends Controller
         return $this->check_and_redirect('add', $data);
     }
 
+    public function adm_add_country(Request $data) {
+        return $this->check_and_redirect('add_country', $data);
+    }
 }

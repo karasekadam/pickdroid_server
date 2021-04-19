@@ -257,6 +257,7 @@
                     </div>
                     <div style="border-bottom: 1px solid white; width: 80%; margin-left: 2%"></div>
                     <div id="countries">
+                        <a href="/admin_add_country"><button class="btn btn-outline-light ml-1 mt-1">+ Přidat stát</button></a>
                         @foreach($countries as $country)
                         <div class="sidefont">
                             <p class="font-weight-light pt-2 pb-2 mt-0 mb-0 ml-2 doToggle" id="{{$country->country}}">{{$country->country}}</p>

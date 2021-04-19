@@ -155,11 +155,24 @@ class mainControl extends Controller
     }
 
     public function new_team(Request $data) {
+        
+        $country_list = Leagues::where("name_538", $data->team_league_name)->get();
+
+        if (count($country_list) == 0) {
+            $country_list = Leagues::where("our_name", $data->team_league_name)->get();
+        }
+
+
+        $country = $country_list[0]->country;
         $new_team = new Clubs();
         $new_team->league = $data->team_league_name;
         $new_team->our_name = $data->new_team;
         $new_team->save();
-        return redirect()->route('adm_home');
+
+        $data->session()->put("team_country", $country);
+        $data->session()->put("leag_country", "");
+        $data->session()->put("league", $data->team_league_name);
+        return redirect()->route('adm_add');
     }
 
     public function new_league(Request $data) {
@@ -171,6 +184,9 @@ class mainControl extends Controller
         $new_league->our_name = $data->new_league;
         $new_league->{'538_league_id'} = $league_id[0]->id;
         $new_league->save();
-        return redirect()->route('adm_home');
+        $data->session()->put("team_country", "");
+        $data->session()->put("leag_country", $data->leag_country_name);
+        $data->session()->put("league", "");
+        return redirect()->route('adm_add');
     }
 }
