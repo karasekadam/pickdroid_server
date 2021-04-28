@@ -104,11 +104,13 @@ for i in decimated:
         match = (match_day.strftime("%Y-%m-%d"), team1, team2)  # nejsem si jistej jestli berem naše týmy, nebo 538
         print("info o zápase: " + team1 + ", " + team2 + ", " + league)
         print(match)
+        # if not i[10]:
+        #     continue
         if match in relevant:
             print("updatuju")
             cursor.execute('UPDATE matches SET prob1={}, prob2={}, probtie={}'.format(i[8], i[9], i[10]) + ' WHERE date="{}" AND team1 = "{}" AND team2 = "{}";'.format(i[1], team1, team2))
         else:
-            print("neupdatuju")
+            print("novej")
             cursor.execute('INSERT INTO matches(season, date, league_id, league, team1, team2, prob1, prob2, probtie, priority) VALUES ({}, "{}", {}, "{}", "{}", "{}", {}, {}, {}, {})'.format(i[0], i[1], i[2], i[3], team1, team2, i[8], i[9], i[10], 10))
 
 cnx.commit()
