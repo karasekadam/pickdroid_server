@@ -54,7 +54,11 @@
 
                         <td class="match d-md-none pt-1 pb-1"><img src="img/logo.png" class="mob_logo">{{$match->team1}}<br><img src="img/logo.png" class="mob_logo">{{$match->team2}}<br><span class="match_date">{{$match->date}}</span>, 11:11</td>
 
-                        <td class="league d-none d-md-table-cell align-middle"><img src="img/logo.png" class="web_logo ml-3"></td>
+                        <td class="league d-none d-md-table-cell align-middle">
+                            @if (is_file('img/logo/' . $match->league . '.png'))
+                            <img src="img/logo/{{$match->league}}.png" class="web_logo ml-3">
+                            @endif
+                        </td>
 
                         <td class="rate text-center align-md-middle"><div class="rate_pad"><b>{{$match->prob1}}<br>1.11</b></div></td>
                         <td class="rate text-center align-md-middle"><div class="rate_pad"><b>{{$match->probtie}}<br>1.11</b></div></td>
