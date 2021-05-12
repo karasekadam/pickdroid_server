@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk" crossorigin="anonymous">
         <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
@@ -225,6 +225,7 @@
                     <div id="leagues" class="mt-md-4">
                         <p class="h3 font-weight-light text-md-left" style="color: #FF8000; margin-bottom: 5%; margin-left: 2%">Top leagues</p>
                         <a href="/admin_add"><button class="btn btn-outline-light ml-1">+ Přidat ligu/tým</button></a>
+                        <a href="/admin_logo"><button class="btn btn-outline-light ml-1 mt-2">+ Upravit logo</button></a>
                         @foreach($top_leagues as $league)
                             
                             <input type="hidden" value="{{$league->name_538}}">
@@ -260,13 +261,13 @@
                         <a href="/admin_add_country"><button class="btn btn-outline-light ml-1 mt-1">+ Přidat stát</button></a>
                         @foreach($countries as $country)
                         <div class="sidefont">
-                            <p class="font-weight-light pt-2 pb-2 mt-0 mb-0 ml-2 doToggle" id="{{$country->country}}">{{$country->country}}</p>
+                            <p class="font-weight-light pt-2 pb-2 mt-0 mb-0 ml-2 doToggle" id="{{str_replace(' ', '', $country->country)}}">{{$country->country}}</p>
                         </div>
                             @foreach($leagues as $league)
                                 @if ($league->country == $country->country)
                                 <input type="hidden" value="{{$league->name_538}}">
                                 <div>
-                                    <p class="sub_{{$country->country}} ml-3 mt-1 pt-1 pb-1" style="display: none; color: white">
+                                    <p class="sub_{{str_replace(' ', '', $country->country)}} ml-3 mt-1 pt-1 pb-1" style="display: none; color: white">
 
                                         @if (is_null($league->our_name))
                                         <a href="/admin_home?league={{$league->name_538}}" style="text-decoration: none; color: white">

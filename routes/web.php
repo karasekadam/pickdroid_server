@@ -39,6 +39,8 @@ Route::get('/admin_add','MatchController@adm_add')->name("adm_add");
 
 Route::get('/admin_add_country','MatchController@adm_add_country')->name("adm_add_country");
 
+Route::get('/admin_logo','MatchController@adm_logo')->name("adm_logo");
+
 // ajax dotaz
 Route::get('/search_match','MatchController@search_match')->name("search_match");
 
@@ -54,11 +56,17 @@ Route::post("/update_values", 'mainControl@update_other');
 
 Route::post("/update_match", 'mainControl@update_match');
 
+Route::post("/update_lock", 'mainControl@update_lock');
+
 Route::post("/new_match", 'mainControl@new_match');
 
 Route::post("/new_team", 'mainControl@new_team')->name("new_team");
 
 Route::post("/new_league", 'mainControl@new_league')->name("new_league");
+
+Route::post("/new_country", 'mainControl@new_country')->name("new_country");
+
+Route::post("/upload_logo", 'mainControl@upload_logo')->name("upload_logo");
 
 Route::post("/update_league", "mainControl@update_league");
 

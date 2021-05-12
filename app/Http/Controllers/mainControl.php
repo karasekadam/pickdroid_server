@@ -177,6 +177,7 @@ class mainControl extends Controller
 
     public function new_league(Request $data) {
         // zatím bude custom league_id s random číslem, později to nějak vyřešíme
+        $old_country = Leagues::where("country", $data->leag_country_name)->whereNull("538_league_id")->delete();
         $league_id = Leagues::orderBy("id", "DESC")->take(1)->select("id")->get();
         $new_league = new Leagues();
         $new_league->sport = "Football";
@@ -188,5 +189,38 @@ class mainControl extends Controller
         $data->session()->put("leag_country", $data->leag_country_name);
         $data->session()->put("league", "");
         return redirect()->route('adm_add');
+    }
+
+    public function new_country(Request $data) {
+        $country = $data->new_country;
+        $leag = new Leagues();
+        $leag->country = $country;
+        $leag->save();
+        return redirect()->route('adm_add_country');
+    }
+
+    public function upload_logo(Request $data) {
+        $this->validate($data, [
+            "new_logo"=>"required"
+        ]);
+        $team = $data->team_hidden . ".png";
+        $path = $data->file("new_logo")->storeAs("", $team);
+        $data->session()->put("team_logo", $data->team_hidden);
+        $data->session()->put("league_logo", $data->league_hidden);
+        $data->session()->put("country_logo", $data->country_hidden);
+        return redirect()->route("adm_logo");
+    }
+
+    public function update_lock(Request $data) {
+        $match = Matches::where("id", $data->match_id)->get();
+        if ($match[0]->changeable == 1) {
+            $match[0]->changeable = 0;
+        } else {
+            $match[0]->changeable = 1;
+        }
+
+        $match[0]->save();
+
+        return redirect()->route("adm_home");
     }
 }

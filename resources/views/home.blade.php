@@ -40,11 +40,21 @@
                     <tr>
                         <td class="date d-none d-md-table-cell align-middle pl-4"><span class="match_date">{{$match->date}}</span><br>11:11</td>
 
-                        <td class="match d-none d-md-table-cell align-middle pt-1 pb-1"><img src="img/logo.png" class="web_logo" alt="logo týmu">{{$match->team1}} - <img src="img/logo.png" class="web_logo" alt="logo týmu">{{$match->team2}}</td>
+                        @if (is_file('img/logo/' . $match->team1 . '.png'))
+                            <td class="match d-none d-md-table-cell align-middle pt-1 pb-1"><img src="img/logo/{{$match->team1}}.png" class="web_logo">{{$match->team1}} - 
+                        @else
+                            <td class="match d-none d-md-table-cell align-middle pt-1 pb-1">{{$match->team1}} -
+                        @endif
+                        
+                        @if (is_file('img/logo/' . $match->team2 . '.png'))
+                            <img src="img/logo/{{$match->team2}}.png" class="web_logo">{{$match->team2}}</td>
+                        @else
+                            {{$match->team2}}</td>
+                        @endif
 
-                        <td class="match d-md-none pt-1 pb-1"><img src="img/logo.png" class="mob_logo" alt="logo týmu">{{$match->team1}}<br><img src="img/logo.png" class="mob_logo" alt="logo týmu">{{$match->team2}}<br><span class="match_date">{{$match->date}}</span>, 11:11</td>
+                        <td class="match d-md-none pt-1 pb-1"><img src="img/logo.png" class="mob_logo">{{$match->team1}}<br><img src="img/logo.png" class="mob_logo">{{$match->team2}}<br><span class="match_date">{{$match->date}}</span>, 11:11</td>
 
-                        <td class="league d-none d-md-table-cell align-middle"><img src="img/logo.png" class="web_logo ml-3" alt="logo ligy"></td>
+                        <td class="league d-none d-md-table-cell align-middle"><img src="img/logo.png" class="web_logo ml-3"></td>
 
                         <td class="rate text-center align-md-middle"><div class="rate_pad"><b>{{$match->prob1}}<br>1.11</b></div></td>
                         <td class="rate text-center align-md-middle"><div class="rate_pad"><b>{{$match->probtie}}<br>1.11</b></div></td>

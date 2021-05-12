@@ -16,6 +16,11 @@
                 date[x].innerText = result;
             }
 
+            $(".lock").click(function() {
+                $("#lock_match_id").val($(this).attr("value"));
+                $("#form_update_lock").submit();
+            });
+
             $(".pencil").click(function() {
                 var pencil_num = $(this).attr("value");
             	$(this).parent().children(".text_field:eq(" + pencil_num + ")").css("display", "inline");
@@ -257,6 +262,9 @@
 
                     </tr>
                 
+                {!! Form::open(['action' => 'mainControl@update_lock', 'method' => 'POST', 'id' => 'form_update_lock']) !!}
+                <input type="hidden" name="match_id" id="lock_match_id">
+                {!! Form::close() !!}
 
                 {!! Form::open(['action' => 'mainControl@update_match', 'method' => 'POST', 'id' => 'form_update_match']) !!}
                 <input type="hidden" form="form_update_match" name="column_name" id="update_column">
@@ -277,31 +285,44 @@
                                 
                                 <span class="match_date">{{$match->date}}</span>
                                 <input type="date" class="text_field" name="date" style="display: none; height: 20%" size="3">
-                                <i class="fa fa-pencil ml-2 pencil" value="0"></i>
+                                <i class="fas fa-pencil-alt ml-2 pencil" value="0"></i>
                                 <button type="button" class="btn btn-sm ok" value="date">Ok</button>
+
                                 <br><span>11:11</span>
                                 <input type="time" class="text_field" name="time" style="display: none; height: 20%" size="3">
-                                <i class="fa fa-pencil ml-2 pencil" value="1"></i>
+                                <i class="fas fa-pencil-alt ml-2 pencil" value="1"></i>
                                 <button type="button" class="btn btn-sm ok" value="time">Ok</button>
+                                
                             </td>
                             
                             <td class="match d-none d-md-table-cell align-middle">
-                            	<img src="img/logo.png" class="web_logo" alt="logo týmu"><span>{{$match->team1}}</span>
+                                @if (is_file('img/logo/' . $match->team1 . '.png'))
+                            	<img src="img/logo/{{$match->team1}}.png" class="web_logo">
+                                @endif
+                                <span>{{$match->team1}}</span>
                             	<input type="text" class="text_field" name="team1" style="display: none; height: 20%" size="7">
-                            	<i class="fa fa-pencil ml-2 pencil" value="0"></i>
+                            	<i class="fas fa-pencil-alt ml-2 pencil" value="0"></i>
                             	<button type="button" class="btn btn-sm ok" value="team1">Ok</button> - 
-                            	<img src="img/logo.png" class="web_logo" alt="logo týmu"><span>{{$match->team2}}</span>
+                                @if (is_file('img/logo/' . $match->team2 . '.png'))
+                            	<img src="img/logo/{{$match->team2}}.png" class="web_logo">
+                                @endif
+                                <span>{{$match->team2}}</span>
                             	<input type="text" class="text_field" name="team2" style="display: none; height: 20%" size="7">
-                            	<i class="fa fa-pencil ml-2 pencil" value="1"></i>
+                            	<i class="fas fa-pencil-alt ml-2 pencil" value="1"></i>
                             	<button type="button" class="btn btn-sm ok" value="team2">Ok</button>
-
+                                @if ($match->changeable == 1)
+                                    <i class="fas fa-sm fa-lock-open lock ml-2" value="{{$match->id}}">
+                                @else
+                                    <i class="fa fa-sm fa-lock lock ml-2" value="{{$match->id}}">
+                                @endif
+                                
                       		</td>
 
                             <td class="match d-md-none">
-                            	<img src="img/logo.png" class="mob_logo" alt="logo týmu">{{$match->team1}}
+                            	<img src="img/logo/{{$match->team1}}.png" class="mob_logo">{{$match->team1}}
                             	<input type="text" style="display: none">
                             	<br>
-                            	<img src="img/logo.png" class="mob_logo" alt="logo týmu">{{$match->team2}}<br>
+                            	<img src="img/logo/{{$match->team2}}.png" class="mob_logo">{{$match->team2}}<br>
                             	<span class="match_date">{{$match->date}}</span>, 11:11
                             </td>
 
@@ -312,7 +333,7 @@
                             <td class="rate text-center align-middle"><b><span>{{$match->prob1}}</span></b>
                                 <input type="text" class="text_field" name="prob1" style="display: none; height: 20%" 
                                 size="3">
-                            	<i class="fa fa-pencil ml-2 pencil" value="0"></i>
+                            	<i class="fas fa-pencil-alt ml-2 pencil" value="0"></i>
                                 <button type="button" class="btn btn-sm ok" value="prob1">Ok</button>
                             	<br><b><span>1.11</span></b>
                                 <input type="text" class="text_field" style="display: none; height: 20%" 
@@ -324,7 +345,7 @@
                             <td class="rate text-center align-middle"><b><span>{{$match->probtie}}</span></b>
                                 <input type="text" class="text_field" name="probtie" style="display: none; height: 20%" 
                                 size="3">
-                                <i class="fa fa-pencil ml-2 pencil" value="0"></i>
+                                <i class="fas fa-pencil-alt ml-2 pencil" value="0"></i>
                                 <button type="button" class="btn btn-sm ok" value="probtie">Ok</button>
                                 <br><b><span>1.11</span></b>
                                 <input type="text" class="text_field" style="display: none; height: 20%" 
@@ -336,7 +357,7 @@
                             <td class="rate text-center align-middle"><b><span>{{$match->prob2}}</span></b>
                                 <input type="text" class="text_field" name="prob2" style="display: none; height: 20%" 
                                 size="3">
-                                <i class="fa fa-pencil ml-2 pencil" value="0"></i>
+                                <i class="fas fa-pencil-alt ml-2 pencil" value="0"></i>
                                 <button type="button" class="btn btn-sm ok" value="prob2">Ok</button>
                                 <br><b><span>1.11</span></b>
                                 <input type="text" class="text_field" style="display: none; height: 20%" 

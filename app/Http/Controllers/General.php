@@ -35,6 +35,7 @@ class General extends Controller
         $league = request("league");
         $id = request("id");
         $search = request("search");    // při kliku na search hodí na domovskou s touto proměnou
+        date_default_timezone_set("Europe/Prague");
         $now = date("Y-m-d");
 
         if ($league) {
@@ -65,7 +66,7 @@ class General extends Controller
 
     public function getCountries() {
         // vybere z aktuálních zápasů ligy a ty joine se státy z leagues
-        $countries = DB::select("SELECT DISTINCT country FROM (SELECT DISTINCT league FROM `matches`) AS m INNER JOIN `leagues` ON m.league=name_538 WHERE country!='Default';");
+        $countries = DB::select("SELECT DISTINCT country FROM (SELECT DISTINCT league, league_id FROM `matches`) AS m INNER JOIN `leagues` ON m.league_id=538_league_id WHERE country !='Default';");
         return $countries;
     }
 

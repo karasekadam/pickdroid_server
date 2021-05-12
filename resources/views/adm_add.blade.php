@@ -96,8 +96,9 @@
                                         @endif
                                     </button>
                                     <div class="dropdown-menu" id="country-list" style="overflow: auto; max-height: 50vh">
-                               	</div>
-							</div>
+                               	    </div>
+						        </div>
+                            </div>
 
 							<div class="form-group mt-3">
 								<label><b>Název ligy:</b></label>
@@ -106,7 +107,7 @@
 
 							<div class="text-center"><button type="button" class="btn btn-lg btn-outline-dark" id="add_new_league">Přidat</button></div>
 
-						</div>
+						
                         </div>
 					   {!! Form::close() !!}
 	    		</div>

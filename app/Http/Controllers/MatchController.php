@@ -33,6 +33,13 @@ class MatchController extends Controller
                 $league = $data->session()->get("league");
 
                 return view("adm_" . $route, ["leagues"=>$leagues, "top_leagues"=>$top_leagues, "countries"=>$countries, "matches"=>$matches, "content"=>$content, "team_country"=>$team_country, "leag_country"=>$leag_country, "league"=>$league]);
+                
+            } else if ($route == "logo") {
+                $team_logo = $data->session()->get("team_logo");
+                $league_logo = $data->session()->get("league_logo");
+                $country_logo = $data->session()->get("country_logo");
+
+                return view("adm_logo", ["leagues"=>$leagues, "top_leagues"=>$top_leagues, "countries"=>$countries, "matches"=>$matches, "content"=>$content, "country"=>$country_logo, "league"=>$league_logo, "team"=>$team_logo]);
             }
 
             return view("adm_" . $route, ["leagues"=>$leagues, "top_leagues"=>$top_leagues, "countries"=>$countries, "matches"=>$matches, "content"=>$content]);
@@ -47,6 +54,7 @@ class MatchController extends Controller
         $league = request("league");
         $id = request("id");
         $search = request("search");    // při kliku na search hodí na domovskou s touto proměnou
+        date_default_timezone_set("Europe/Prague");
         $now = date("Y-m-d");
         $day = date("d");
         $hours = (int) date("h") + (int) request("hours");
@@ -163,5 +171,9 @@ class MatchController extends Controller
 
     public function adm_add_country(Request $data) {
         return $this->check_and_redirect('add_country', $data);
+    }
+
+    public function adm_logo(Request $data) {
+        return $this->check_and_redirect('logo', $data);
     }
 }
