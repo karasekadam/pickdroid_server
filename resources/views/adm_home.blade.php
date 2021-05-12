@@ -327,7 +327,9 @@
                             </td>
 
                             <td class="league d-none d-md-table-cell align-middle">
-                            	<img src="img/logo.png" class="web_logo ml-2" alt="logo ligy">
+                                @if (is_file('img/logo/' . $match->league . '.png'))
+                                    <img src="img/logo/{{$match->league}}.png" class="web_logo ml-3">
+                                @endif
                             </td>
 
                             <td class="rate text-center align-middle"><b><span>{{$match->prob1}}</span></b>
