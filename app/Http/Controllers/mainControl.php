@@ -223,4 +223,17 @@ class mainControl extends Controller
 
         return redirect()->route("adm_home");
     }
+
+    public function country_fill(Request $data) {
+        $empty_countries = Leagues::where("country", "Default")->get();
+        foreach ($empty_countries as $country) {
+            $name = $country->name_538;
+            $new_name = str_replace(" ", "_", $name);
+            $value = $data->$new_name;
+            if (!is_null($value)) {
+                $country->country = $value;
+                $country->save();
+            }
+        }
+    }
 }

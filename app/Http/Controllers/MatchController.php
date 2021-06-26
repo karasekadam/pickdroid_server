@@ -42,7 +42,9 @@ class MatchController extends Controller
                 return view("adm_logo", ["leagues"=>$leagues, "top_leagues"=>$top_leagues, "countries"=>$countries, "matches"=>$matches, "content"=>$content, "country"=>$country_logo, "league"=>$league_logo, "team"=>$team_logo]);
             }
 
-            return view("adm_" . $route, ["leagues"=>$leagues, "top_leagues"=>$top_leagues, "countries"=>$countries, "matches"=>$matches, "content"=>$content]);
+            $empty_countries = Leagues::where("country", "Default")->get();
+
+            return view("adm_" . $route, ["leagues"=>$leagues, "top_leagues"=>$top_leagues, "countries"=>$countries, "matches"=>$matches, "content"=>$content, "empty_countries"=>$empty_countries]);
         } else {
             return view($route, ["leagues"=>$leagues, "top_leagues"=>$top_leagues, "countries"=>$countries, "matches"=>$matches, "content"=>$content]);
         }
@@ -175,5 +177,9 @@ class MatchController extends Controller
 
     public function adm_logo(Request $data) {
         return $this->check_and_redirect('logo', $data);
+    }
+
+    public function adm_fill(Request $data) {
+        return $this->check_and_redirect('fill', $data);
     }
 }

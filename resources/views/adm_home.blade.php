@@ -1,6 +1,32 @@
 @extends("layouts.admin_layout")
     @section("content")
 
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Chybějící státy</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                  <div class="modal-body">
+                    U některých lig chybí stát. Doplnit je můžete manuálně po kliknutí na "Vyplnit".
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Zavřít</button>
+                    <a href="admin_fill"><button type="button" class="btn btn-primary">Vyplnit</button></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (count($empty_countries) != 0)
+        <script type="text/javascript">
+            $("#exampleModal").modal("show");
+        </script>
+    @endif
+
     <script>
         
         $(document).ready(function() {
