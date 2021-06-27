@@ -43,7 +43,7 @@
                 color: black;
             }
 
-            .dropdown-content {
+            /*.dropdown-content {
                 display: none;
                 position: absolute;
                 background-color: #f1f1f1;
@@ -59,7 +59,7 @@
                 text-decoration: none;
                 display: block;
                 width: 100%;
-            }
+            }*/
 
             .dropdown a:hover {background-color: #ddd;}
 
@@ -70,7 +70,7 @@
     <body>
         <script>
             // funkce filtru
-            function filter() {
+            /*function filter() {
                 document.getElementById("myDropdown").classList.toggle("show");
             }
 
@@ -86,7 +86,7 @@
                         }
                     }
                 }
-            }
+            }*/
 
             // funkce vyhledávacího tlačíka
             function search_site() {
@@ -103,6 +103,10 @@
                 $(".doToggle").click(function() {
                     value = $(this).attr("id");
                     $(".sub_"+value).slideToggle();
+                });
+
+                $("#logout_btn").click(function() {
+                    $("#logout").submit();
                 });
 
                 // filter
@@ -242,13 +246,8 @@
                     <div class="row h-100 align-items-center">
                         <div class="col-xl-3 col-lg-2 col-md-1">
                             <div class="dropdown">
-                                <button onclick="filter()" class="btn btn-dark dropbtn">Filter &#9660;</button>
-                                <!--<div id="myDropdown" class="dropdown-content">
-                                    <button onclick="content_filter('2')">2 hours</button>
-                                    <button onclick="content_filter('4')">4 hours</button>
-                                    <button onclick="content_filter('24')">today</button>
-                                </div>-->
-                                <div class="dropdown-menu dropdown-content" id="myDropdown">
+                                <button onclick="" class="btn btn-dark dropdown-toggle" id="drpdwn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Filter</button>
+                                <div class="dropdown-menu dropdown-content" aria-labelledby="drpdwn">
                                     <button class="dropdown-item" onclick="content_filter('2')">2 hours</button>
                                     <button class="dropdown-item" onclick="content_filter('4')">4 hours</button>
                                     <button class="dropdown-item" onclick="content_filter('24')">today</button>
@@ -260,14 +259,29 @@
                             <form class="form-inline" action="/action_page.php">
                                 <div class="form-group">
                                     <input type="text" class="form-control" placeholder="Search matches.." id="search" name="search" size="40">
-                                    <button type="button" onclick="search_site()" class="btn btn-outline-dark" style="margin-left: 0.5em"><i class="fa fa-search"></i></button>
+                                    <button type="button" onclick="search_site()" class="btn btn-dark" style="margin-left: 0.5em"><i class="fa fa-search"></i></button>
                                 </div>
 
                             </form>
                         </div>
 
                         <div class="col-xl-4 col-lg-4 col-md-7">
+                            @if ($user == "")
                             <a href="/login"><button type="button" class="btn btn-dark float-right nav-btn">Login</button></a>
+                            @else
+                            <div class="dropdown">
+                              <button class="btn btn-dark dropdown-toggle float-right nav-btn" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Účet
+                              </button>
+
+                              <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <!--<a class="dropdown-item" href="#">Přehled účtu</a>-->
+                                {!! Form::open(['action' => 'mainControl@logout', 'method' => 'POST', 'id' => 'logout']) !!}
+                                <a class="dropdown-item" id="logout_btn" style="cursor: pointer; color: black">Odhlásit se</a>
+                                {!! Form::close() !!}
+                              </div>
+                            </div>
+                            @endif
                             <a href="/aboutus"><button type="button" class="btn btn-dark float-right nav-btn">About us</button></a>
                             <a href="/blog"><button type="button" class="btn btn-dark float-right nav-btn">Blog</button></a>
                         </div>

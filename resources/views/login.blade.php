@@ -19,18 +19,19 @@
 	    			<div class="mt-4">
 	    				<div class="form-group">
 							<label for="email"><b>Email:</b></label>
-							<input type="text" name="email" id="email" class="form-control"><br>
+							<input type="text" name="email" id="email" class="form-control" required>
 						</div>
 
 						<div class="form-group">
 							<label for="password"><b>Password:</b></label>
-							<input type="password" name="password" id="password" class="form-control"><br>
+							<input type="password" name="password" id="password" class="form-control" required>
 						</div>
 
-						<div class="text-center"><button class="btn btn-lg btn-outline-dark">Log in</button></div>
+						<div class="text-center"><button class="btn btn-lg btn-dark btn-block">Log in</button></div><br>
 
 					</div>
 					{!! Form::close() !!}
+					<a href="/google_login" style="text-decoration: none"><button class="btn btn-danger btn-block">Log in with Google</button></a>
 				</div>
     		</div>
     	</div>
@@ -45,22 +46,24 @@
 
 	    				<div class="form-group">
 							<label for="email"><b>Email:</b></label>
-							<input type="email" name="email" id="email" class="form-control"><br>
+							<input type="email" name="email" id="email" class="form-control" required>
 						</div>
 
 	    				<div class="form-group">
 							<label for="name"><b>Name:</b></label>
-							<input type="text" name="name" id="name" class="form-control"><br>
+							<input type="text" name="name" id="name" class="form-control" required>
 						</div>
 
 						<div class="form-group">
 							<label for="password"><b>Password:</b></label>
-							<input type="password" name="password" id="password" class="form-control"><br>
+							<input type="password" name="password" id="password" class="form-control" required>
 						</div>
 
-						<div class="text-center"><button class="btn btn-lg btn-outline-dark" id="prihasit">Sign up</button></div>
+						<div class="text-center"><button class="btn btn-lg btn-dark btn-block" id="prihasit">Sign up</button></div><br>
 					</div>
 					{!! Form::close() !!}
+					<a href="/google_login" style="text-decoration: none"><button class="btn btn-danger btn-block">Sign up with Google</button></a>
+					<!--<a href="/facebook_login" style="text-decoration: none"><button class="btn btn-info btn-block mt-2">Sign up with Facebook</button></a>-->
 				</div>
     		</div>
     	</div>

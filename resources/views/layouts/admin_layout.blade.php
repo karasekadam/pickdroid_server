@@ -200,7 +200,7 @@
                             <form class="form-inline" action="/action_page.php">
                                 <div class="form-group" style="">
                                     <input type="text" class="form-control" placeholder="Search matches.." name="search" id="search" size="40">
-                                    <button type="button" class="btn btn-outline-dark" style="margin-left: 0.5em"><i class="fa fa-search"></i></button>
+                                    <button type="button" class="btn btn-dark" style="margin-left: 0.5em"><i class="fa fa-search"></i></button>
                                 </div>
 
                             </form>

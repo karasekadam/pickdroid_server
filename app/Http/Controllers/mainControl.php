@@ -11,20 +11,20 @@ use App\Models\Other_values;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\General;
+use Socialite;
 
 class mainControl extends Controller
 {
-
     public function __construct() {
         $this->general = new General();
     }
 
-
-    public function check_login(Request $data) {
+    public function check_login(Request $data) {  
     	$this->validate($data, [
             "email"=>"required",
             "password"=>"required"
         ]);
+
 
         $user = User::where("email", $data->email)->get();
         if (!$user->first() or !(Hash::check($data->password, $user->first()->password))) {
@@ -39,8 +39,6 @@ class mainControl extends Controller
     }
 
     public function check_reg(Request $data) {
-
-
     	$this->validate($data, [
             "name"=>"required",
             "password"=>"required"
@@ -64,7 +62,11 @@ class mainControl extends Controller
         $leagues = $this->general->getLeagues();
         $top_leagues = $this->general->getTopLeagues();
         $countries = $this->general->getCountries();
-        return view('success_reg', ["leagues"=>$leagues, "top_leagues"=>$top_leagues, "countries"=>$countries]);
+        return view('success_reg', ["leagues"=>$leagues, "top_leagues"=>$top_leagues, "countries"=>$countries, "user"=>""]);
+    }
+
+    public function account(Request $data) {
+
     }
 
     public function logout(Request $data) {
@@ -235,5 +237,15 @@ class mainControl extends Controller
                 $country->save();
             }
         }
+    }
+
+    public function google_login() {
+        return Socialite::driver('google')->redirect();
+    }
+
+    public function after_login(Request $data) {
+        $user = Socialite::driver('google')->user();
+        $data->session()->put("user", $user->name);
+        return redirect()->route("home");
     }
 }

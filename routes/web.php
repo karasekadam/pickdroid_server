@@ -43,6 +43,12 @@ Route::get('/admin_logo','MatchController@adm_logo')->name("adm_logo");
 
 Route::get('/admin_fill', 'MatchController@adm_fill')->name("adm_fill");
 
+Route::get('/google_login', 'mainControl@google_login');
+
+Route::get('/after_login', 'mainControl@after_login');
+
+Route::get('/account', 'mainControl@account');
+
 // ajax dotaz
 Route::get('/search_match','MatchController@search_match')->name("search_match");
 

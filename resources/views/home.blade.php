@@ -45,14 +45,25 @@
                         @else
                             <td class="match d-none d-md-table-cell align-middle pt-1 pb-1">{{$match->team1}} -
                         @endif
-                        
+
                         @if (is_file('img/logo/' . $match->team2 . '.png'))
                             <img src="img/logo/{{$match->team2}}.png" class="web_logo">{{$match->team2}}</td>
                         @else
                             {{$match->team2}}</td>
                         @endif
 
-                        <td class="match d-md-none pt-1 pb-1"><img src="img/logo.png" class="mob_logo">{{$match->team1}}<br><img src="img/logo.png" class="mob_logo">{{$match->team2}}<br><span class="match_date">{{$match->date}}</span>, 11:11</td>
+                        <td class="match d-md-none pt-1 pb-1">
+                            @if (is_file('img/logo/' . $match->team1 . '.png'))
+                                <img src="img/logo/{{$match->team1}}.png" class="mob_logo">
+                            @endif
+                            {{$match->team1}}
+                            <br>
+                            @if (is_file('img/logo/' . $match->team2 . '.png'))
+                                <img src="img/logo/{{$match->team2}}.png" class="mob_logo">
+                            @endif
+                            {{$match->team2}}
+                            <br>
+                            <span class="match_date">{{$match->date}}</span>, 11:11</td>
 
                         <td class="league d-none d-md-table-cell align-middle">
                             @if (is_file('img/logo/' . $match->league . '.png'))
