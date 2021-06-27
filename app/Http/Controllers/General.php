@@ -30,7 +30,7 @@ class General extends Controller
         }*/
 
 
-    public function getMatches() {
+    public function getMatches(Request $data) {
         // $sport = request("sport");   nešlo mi to použít jako parametr místo Matches, tak buď na to přijdu, nebo tam budou ify, když nebude moc sportů
         $league = request("league");
         $id = request("id");
@@ -38,6 +38,7 @@ class General extends Controller
         date_default_timezone_set("Europe/Prague");
         $now = date("Y-m-d");
 
+        $data->session()->put("notification", "0");
         if ($league) {
             $matches = Matches::where("league", $league)->where("date", ">=", $now)->orderBy("priority", "asc")->orderBy("date", "asc")->get();
         } elseif ($id) {
@@ -45,6 +46,7 @@ class General extends Controller
         } elseif ($search) {
             $matches = Matches::where('team1','LIKE', "% ".$search."%")->orWhere('team1','LIKE',$search."%")->orWhere('team2','LIKE', "% ".$search."%")->orWhere('team2','LIKE',$search."%")->get();
         } else {
+            $data->session()->put("notification", "1");
             $matches = Matches::where("date", ">=", $now)->orderBy("priority", "asc")->orderBy("date", "asc")->take(30)->get();
         }
         return $matches;

@@ -246,7 +246,7 @@
                                     </a>
                                     @endif
 
-                                    <i class="fa fa-pencil ml-2 pencil_league" style="color: white" value="0">
+                                    <i class="fas fa-pencil-alt ml-2 pencil_league" style="color: white" value="0">
                                     </i>
                                     <input type="text" class="text_field" name="new_leag_input" style="display: none; height: 20%" size="12">
                                     <button type="button" class="btn btn-sm leag_submit" style="background-color: white; margin-bottom: 2%; display: none" value="date">Ok</button>
@@ -283,7 +283,7 @@
                                         </a>
                                         @endif
 
-                                    <i class="fa fa-pencil ml-2 pencil_league" style="color: white" value="0"></i>
+                                    <i class="fas fa-pencil-alt ml-2 pencil_league" style="color: white" value="0"></i>
                                     <input type="text" class="text_field" name="new_leag_input" style="display: none; height: 20%" size="12">
                                     <button type="button" class="btn btn-sm leag_submit" style="background-color: white; margin-bottom: 2%; display: none" value="date">Ok</button>
                                     </p>

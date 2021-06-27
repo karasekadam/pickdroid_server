@@ -24,7 +24,7 @@
 	<div class="row" id="no_pad_row">
 		<div class="col-md-6">
 			<div class="mt-3 ml-3">
-				<p class="edit">{{$content->first()->about_us}}<i id="edit_icon" class="fa fa-pencil ml-2" style="display: none"></i></p>
+				<p class="edit">{{$content->first()->about_us}}<i id="edit_icon" class="fas fa-pencil-alt ml-2" style="display: none"></i></p>
 				{!! Form::open(['action' => 'mainControl@update_other', 'method' => 'POST']) !!}
 
 					<textarea class="form-control" name="edit_area" id="edit_area" style="display: none"></textarea>

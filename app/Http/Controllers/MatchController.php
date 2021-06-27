@@ -20,11 +20,11 @@ class MatchController extends Controller
 
     public function check_and_redirect($route, $data) {
         $user = $data->session()->get("user");
-        $matches = $this->general->getMatches();
-        $leagues = $this->general->getLeagues();
-        $top_leagues = $this->general->getTopLeagues();
-        $countries = $this->general->getCountries();
-        $content = $this->general->getOther();
+        $matches = $this->general->getMatches($data);
+        $leagues = $this->general->getLeagues($data);
+        $top_leagues = $this->general->getTopLeagues($data);
+        $countries = $this->general->getCountries($data);
+        $content = $this->general->getOther($data);
 
         if ($user == "admin" && $route != "login") {
             if ($route == "add") {
@@ -42,7 +42,11 @@ class MatchController extends Controller
                 return view("adm_logo", ["leagues"=>$leagues, "top_leagues"=>$top_leagues, "countries"=>$countries, "matches"=>$matches, "content"=>$content, "country"=>$country_logo, "league"=>$league_logo, "team"=>$team_logo]);
             }
 
-            $empty_countries = Leagues::where("country", "Default")->get();
+            if ($data->session()->get("notification") == "1") {
+                $empty_countries = Leagues::where("country", "Default")->get();
+            } else {
+                $empty_countries = [];
+            }
 
             return view("adm_" . $route, ["leagues"=>$leagues, "top_leagues"=>$top_leagues, "countries"=>$countries, "matches"=>$matches, "content"=>$content, "empty_countries"=>$empty_countries]);
         } else {
