@@ -39,15 +39,20 @@
                 @foreach($matches as $match)
                     <tr>
                         <td class="date d-none d-md-table-cell align-middle pl-4"><span class="match_date">{{$match->date}}</span><br>11:11</td>
-
-                        @if (is_file('img/logo/' . $match->team1 . '.png'))
-                            <td class="match d-none d-md-table-cell align-middle pt-1 pb-1"><img src="img/logo/{{$match->team1}}.png" class="web_logo">{{$match->team1}} - 
+                        @php
+                        {{
+                            $logo_title1 = str_replace("/", "-", $match->team1);
+                            $logo_title2 = str_replace("/", "-", $match->team2);
+                        }}
+                        @endphp
+                        @if (is_file('img/logo/' . $logo_title1 . '.png'))
+                            <td class="match d-none d-md-table-cell align-middle pt-1 pb-1"><img src="img/logo/{{$logo_title1}}.png" class="web_logo">{{$match->team1}} -
                         @else
                             <td class="match d-none d-md-table-cell align-middle pt-1 pb-1">{{$match->team1}} -
                         @endif
 
-                        @if (is_file('img/logo/' . $match->team2 . '.png'))
-                            <img src="img/logo/{{$match->team2}}.png" class="web_logo">{{$match->team2}}</td>
+                        @if (is_file('img/logo/' . $logo_title2 . '.png'))
+                            <img src="img/logo/{{$logo_title2}}.png" class="web_logo">{{$match->team2}}</td>
                         @else
                             {{$match->team2}}</td>
                         @endif
