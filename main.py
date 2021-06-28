@@ -14,7 +14,7 @@ for row in range(len(data)):
 decimated = []
 today = datetime.date.today()
 two_weeks = today + datetime.timedelta(days=14)
-print(today)
+
 for i in data:
     if len(i) == 23 and i[0] != "season":
         day = i[1].split("-")
@@ -30,14 +30,14 @@ for i in data:
 # connects to database
 print("connecting to the database")
 cnx = mysql.connector.connect(user='kokot', password='kokot123', host='mysql.dangrb.dreamhosters.com', database='pickdroid_db')
-# cnx = mysql.connector.connect(user='pallas', password='greplpekl', host='127.0.0.1', database='pickdroid', auth_plugin='mysql_native_password')  # , auth_plugin='mysql_native_password'
+# cnx = mysql.connector.connect(user='elivano', password='greplpekl', host='127.0.0.1', database='pickdroid', auth_plugin='mysql_native_password')  # , auth_plugin='mysql_native_password'
 
 print("connected")
 cursor = cnx.cursor()
 
 # deletes old matches
 
-print(today)
+print("today: ", today)
 cursor.execute("DELETE FROM `matches` WHERE date < '" + str(today) + "';")
 cnx.commit()
 
@@ -70,8 +70,8 @@ for club in clubs:
     clubs_name[club[1]] = club[2]
     clubs_set.add(club[1])
 
-print(clubs_name)
-print(clubs_name["Sydney FC"])
+# print(clubs_name)
+# print(clubs_name["Sydney FC"])
 
 print(relevant)
 # uploads data
@@ -104,8 +104,6 @@ for i in decimated:
         match = (match_day.strftime("%Y-%m-%d"), team1, team2)  # nejsem si jistej jestli berem naše týmy, nebo 538
         print("info o zápase: " + team1 + ", " + team2 + ", " + league)
         print(match)
-        # if not i[10]:
-        #     continue
         if match in relevant:
             print("updatuju")
             cursor.execute('UPDATE matches SET prob1={}, prob2={}, probtie={}'.format(i[8], i[9], i[10]) + ' WHERE date="{}" AND team1 = "{}" AND team2 = "{}";'.format(i[1], team1, team2))
