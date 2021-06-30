@@ -13,6 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+header('Access-Control-Allow-Origin: *');
+header( 'Access-Control-Allow-Headers: Authorization, Content-Type' );
+
 Route::get('/',"MatchController@home")->name("home");
 
 Route::get('/login', "MatchController@login")->name("login");
