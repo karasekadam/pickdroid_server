@@ -193,25 +193,28 @@
                             let match_time = new Date(parseInt(date[0]), parseInt(date[1]) - 1, parseInt(date[2]), parseInt((myArr[i].time)) ? (myArr[i].time) : 0);
                             let now = new Date();
                             let until = new Date(now.getTime() + hours*3600000);
-                            if (match_time > until) {
+                            if (hours !== "0" && match_time > until) {
                                 continue;
                             }
                             let format = date[2] + "." + date[1]
                             output += '<tr> <td class="date d-none d-md-table-cell align-middle pl-4"><span class="match_date">' + format + '</span><br>11:11</td>' +
-                                '<td class="match d-none d-md-table-cell align-middle pt-1 pb-1"><img src="img/logo.png" class="web_logo" alt="logo týmu">' + myArr[i].team1 +' - <img src="img/logo.png" class="web_logo" alt="logo týmu">' + myArr[i].team2 +'</td>' +
-                                '<td class="match d-md-none pt-1 pb-1"><img src="img/logo.png" class="mob_logo" alt="logo týmu">' + myArr[i].team1 +'<br><img src="img/logo.png" class="mob_logo" alt="logo týmu">' + myArr[i].team2 +'<br><span class="match_date">' + format +'</span>, 11:11</td>' +
-                                '<td class="league d-none d-md-table-cell align-middle"><img src="img/logo.png" class="web_logo ml-3" alt="logo ligy"></td>' +
+                                '<td class="match d-none d-md-table-cell align-middle pt-1 pb-1"><img src="img/logo/' + myArr[i].team1 + '.png" class="web_logo" alt="logo týmu">' + myArr[i].team1 +' - <img src="img/logo/' + myArr[i].team2 + '.png" class="web_logo" alt="logo týmu">' + myArr[i].team2 +'</td>' +
+                                '<td class="match d-md-none pt-1 pb-1"><img src="img/logo/' + myArr[i].team1 + '.png" class="mob_logo" alt="logo týmu">' + myArr[i].team1 +'<br><img src="img/logo/' + myArr[i].team2 + '.png" class="mob_logo" alt="logo týmu">' + myArr[i].team2 +'<br><span class="match_date">' + format +'</span>, 11:11</td>' +
+                                '<td class="league d-none d-md-table-cell align-middle"><img src="img/logo/' + myArr[i].league + '.png" class="web_logo ml-3" alt="logo ligy"></td>' +
                                 '<td class="rate text-center align-md-middle"><div class="rate_pad"><b>' + myArr[i].prob1 +'<br>1.11</b></div></td>' +
                                 '<td class="rate text-center align-md-middle"><div class="rate_pad"><b>' + myArr[i].probtie +'<br>1.11</b></div></td>' +
                                 '<td class="rate text-center align-md-middle"><div class="rate_pad"><b>' + myArr[i].prob2 +'<br>1.11</b></div></td></tr>'
+                        }
+                        if (output === "") {
+                            output = "To do - chybová hláška a odkaz zpět na všechny bez načítání stránky";
                         }
                         document.getElementsByTagName("tbody")[0].innerHTML = output;
                     }
                 };
                 let href = window.location.href.split("/");
-                let last = href[href.length- 1];
+                let last = href[href.length - 1];
                 console.log(last);
-                xhttp.open("GET", "http://www.dangrb.dreamhosters.com/search_match_filter" + last + "&hours=" + hours, true);
+                xhttp.open("GET", "http://127.0.0.1:8000/search_match_filter" + last, true); // smazal jsem hodiny z dotazu, snad v pohodě? www.dangrb.dreamhosters.com/search_match_filter
                 xhttp.send();
             }
         </script>
@@ -251,6 +254,7 @@
                                     <button class="dropdown-item" onclick="content_filter('2')">2 hours</button>
                                     <button class="dropdown-item" onclick="content_filter('4')">4 hours</button>
                                     <button class="dropdown-item" onclick="content_filter('24')">today</button>
+                                    <button class="dropdown-item" onclick="content_filter('0')">all</button>
                                 </div>
                             </div>
                         </div>
