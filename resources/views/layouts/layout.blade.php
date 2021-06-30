@@ -214,7 +214,7 @@
                 let href = window.location.href.split("/");
                 let last = href[href.length - 1];
                 console.log(last);
-                xhttp.open("GET", "http://127.0.0.1:8000/search_match_filter" + last, true); // smazal jsem hodiny z dotazu, snad v pohodě? www.dangrb.dreamhosters.com/search_match_filter
+                xhttp.open("GET", "http://www.dangrb.dreamhosters.com/search_match_filter" + last, true); // smazal jsem hodiny z dotazu, snad v pohodě? www.dangrb.dreamhosters.com/search_match_filter
                 xhttp.send();
             }
         </script>
