@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\General;
 use Socialite;
+use ipinfo\ipinfo\IPinfo;
 
 class mainControl extends Controller
 {
@@ -39,11 +40,14 @@ class mainControl extends Controller
     }
 
     public function check_reg(Request $data) {
-    	$this->validate($data, [
+        $this->validate($data, [
             "name"=>"required",
             "password"=>"required"
         ]);
-
+        $ip = $data->ip();
+        $json = file_get_contents("http://ipinfo.io/{$ip}?token=f265124d3e3e8e");
+        $details = json_decode($json, false);
+        
         $user = User::where("email", $data->email)->get();
         if($user->first()) {
         	return redirect()->route("login");
@@ -57,6 +61,7 @@ class mainControl extends Controller
         $user->fill([
             'password' => Hash::make($data->password)
         ])->save();
+        $user->location = $details->country;
         $user->save();
         
         $leagues = $this->general->getLeagues();
@@ -228,10 +233,10 @@ class mainControl extends Controller
 
     public function country_fill(Request $data) {
         $empty_countries = Leagues::where("country", "Default")->get();
+        echo $data->ip();
         foreach ($empty_countries as $country) {
-            $name = $country->name_538;
-            $new_name = str_replace(" ", "_", $name);
-            $value = $data->$new_name;
+            $id = $country->{'id'};
+            $value = $data->$id;
             if (!is_null($value)) {
                 $country->country = $value;
                 $country->save();
