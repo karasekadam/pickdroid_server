@@ -2,6 +2,10 @@ table {
     line-height: 1.3em
 }
 
+body {
+    overflow-x: hidden;
+}
+
 td {
     white-space: nowrap;
 }

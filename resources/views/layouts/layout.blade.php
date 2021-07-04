@@ -279,7 +279,7 @@
                               </button>
 
                               <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                <!--<a class="dropdown-item" href="#">Přehled účtu</a>-->
+                                <a class="dropdown-item" href="account">Přehled účtu</a>
                                 {!! Form::open(['action' => 'mainControl@logout', 'method' => 'POST', 'id' => 'logout']) !!}
                                 <a class="dropdown-item" id="logout_btn" style="cursor: pointer; color: black">Odhlásit se</a>
                                 {!! Form::close() !!}

@@ -70,7 +70,13 @@ class mainControl extends Controller
     }
 
     public function account(Request $data) {
-
+        $user = $data->session()->get("user");
+        $user_data = User::where("email", $user)->get();
+        $country = $user_data[0]->location;
+        $leagues = $this->general->getLeagues();
+        $top_leagues = $this->general->getTopLeagues();
+        $countries = $this->general->getCountries();
+        return view('account', ["leagues"=>$leagues, "top_leagues"=>$top_leagues, "countries"=>$countries, "user"=>$user, "country"=>$country]);
     }
 
     public function logout(Request $data) {
@@ -80,7 +86,6 @@ class mainControl extends Controller
 
     public function update_other(Request $data) {
         $field = $data->edit_hidden;
-
 
         $others = Other_values::select("blog", "about_us")->update([$field=>$data->edit_area]);
 
