@@ -12,7 +12,6 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\General;
 use Socialite;
-use ipinfo\ipinfo\IPinfo;
 
 class mainControl extends Controller
 {
