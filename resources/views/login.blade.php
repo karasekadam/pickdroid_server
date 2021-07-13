@@ -46,9 +46,9 @@
 
 
 	
-    <div class="row" style="height: 100%" id="no_pad_row">
+    <div class="row" style="height: 100%;" id="no_pad_row">
     	<div class="col-md-12">
-    		<div class="row mt-5 justify-content-center" style="height: 80%">
+    		<div class="row mt-4 justify-content-center" style="height: 80%">
     			<div class="col-md-3">
 	    			<p class="h2 font-weight-light text-center">Sign up</p>
 

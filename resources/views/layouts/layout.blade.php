@@ -230,7 +230,7 @@
 
                         <div class="col-xl-4 col-lg-4 col-md-7">
                             @if ($user == "")
-                            <a href="/login"><div class="float-right mt-1 mr-3" style="color: white">Login</div></a>
+                            <div class="float-right mt-1 mr-3" style="color: white; cursor: pointer;" data-toggle="modal" data-target="#exampleModal">Login</div>
                             @else
                             <div class="dropdown">
                               <div class="dropdown-toggle float-right" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -245,12 +245,44 @@
                               </div>
                             </div>
                             @endif
-                            <a href="/aboutus"><div class="float-right mt-1 mr-4 pr-3 pl-3 font-weight-light" style="color: black; background-color: #ffdf1b; border-radius: 2px">Register</div></a>
+                            <a href="/login"><div class="float-right mt-1 mr-4 pr-3 pl-3 font-weight-light" style="color: black; background-color: #ffdf1b; border-radius: 2px">Register</div></a>
                             <!--
                             <a href="/blog"><button type="button" class="btn btn-dark float-right nav-btn">Blog</button></a>-->
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="row justify-content-center" style="height: 80%">
+                            <div class="col-md-10">
+                        {!! Form::open(['action' => 'mainControl@check_login', 'method' => 'POST']) !!}
+                        <div class="mt-4">
+                            <div class="form-group">
+                                <label for="email"><b>Email</b></label>
+                                <input type="text" name="email" id="email" class="form-control" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="password"><b>Password</b></label>
+                                <input type="password" name="password" id="password" class="form-control" required>
+                            </div>
+
+                            <div class="text-center"><button class="btn btn-lg btn-block" id="prihasit" style="color: white; background-color: black">Log in</button></div><br>
+                    </div>
+                    {!! Form::close() !!}
+                    <a href="/google_login" style="text-decoration: none"><button class="btn btn-block" style="border: 1px solid black"><i class="fab fa-google float-left mt-1"></i>Continue with Google</button></a>
+                    <!--<a href="/facebook_login" style="text-decoration: none"><button class="btn btn-info btn-block mt-2">Sign up with Facebook</button></a>-->
+                </div>
+            </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div class="row" style="height: 92vh">
