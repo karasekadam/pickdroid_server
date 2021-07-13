@@ -1,0 +1,131 @@
+import requests
+import bs4
+import html5lib
+
+
+league_names = {
+    "champions-league": "UEFA Champions League",
+    "europa-league": "UEFA Europa League",
+    "bundesliga-austria": "Austrian T-Mobile Bundesliga",
+    "first-division-a": "Belgian Jupiler League",
+    "superligaen": "Danish SAS-Ligaen",
+    "premier-league": "Barclays Premier League",
+    "championship": "English League Championship",
+    "league-one": "English League One",
+    "league-two": "English League Two",
+    "fa-wsl": "FA Women's Super League",
+    "ligue-1": "French Ligue 1",
+    "ligue-2": "French Ligue 2",
+    "bundesliga": "German Bundesliga",
+    "bundesliga-2": "German 2. Bundesliga",
+    "super-league-greece": "",
+    "serie-a": "Italy Serie A",
+    "serie-b": "Italy Serie B",
+    "eredivisie": "Dutch Eredivisie",
+    "eliteserien": "Norwegian Tippeligaen",
+    "primeira-liga": "Portuguese Liga",
+    "premier-league-russia": "Russian Premier Liga",
+    "premiership": "Scottish Premiership",
+    "la-liga": "Spanish Primera Division",
+    "la-liga-2": "Spanish Segunda Division",
+    "allsvenskan": "Swedish Allsvenskan",
+    "super-league": "Swiss Raiffeisen Super League",
+    "super-lig": "Turkish Turkcell Super Lig",
+    "liga-mx": "Mexican Primera Division Torneo Clausura",
+    "mls": "",
+    "mls-is-back": "",
+    "usl": "",
+    "nwsl": "",
+    "nwsl-challenge-cup": "",
+    "superliga": "",
+    "brasileirao": "",
+    "a-league": "Australian A-League",
+    "chinese-super-league": "",
+    "j1-league": "Japanese J League",
+    "premier-division": "",
+}
+
+
+main_page = requests.get("https://projects.fivethirtyeight.com/soccer-predictions/")
+soup = bs4.BeautifulSoup(main_page.content, "html5lib")
+league_div = soup.find("select", {"id": "leagueselector"})
+leagues_tag = league_div.findAll("option", {"class": "nav-option"})
+# print(leagues_tag)
+
+skip = True
+for k in leagues_tag:
+    liga = k["value"]
+    if liga not in league_names:
+        print('"' + liga + '": "",')
+    if liga == "eliteserien":
+        skip = False
+    if skip:
+        continue
+
+    # one league
+    league_page = requests.get("https://projects.fivethirtyeight.com/soccer-predictions/" + liga + "/").content
+    clubs_tags_page = bs4.BeautifulSoup(league_page, "html5lib")
+    league_logo = clubs_tags_page.find("img", {"class": "logo-img"})
+    # league logo scrape
+    if league_names[liga] != "":
+        suburl = league_logo["src"]
+        league_logo_url = requests.get("https://projects.fivethirtyeight.com" + suburl)
+        file = open(league_names[liga], "wb")
+        file.write(league_logo_url.content)
+        file.close()
+
+    clubs_tags = clubs_tags_page.find("div", {"id": "forecast-table-wrapper"}).find("tbody")
+    for i in clubs_tags:
+        if "/" in i["data-str"]:
+            print(i)
+            continue
+        logo_url = i.find("img")["src"]
+        logo = requests.get(logo_url)
+        if not logo.ok:
+            print(i)
+            print(liga)
+            print(logo_url)
+        name = i["data-str"]
+        file = open(name, "wb")
+        file.write(logo.content)
+        file.close()
+
+"""
+
+import requests
+import bs4
+import html5lib
+
+main_page = requests.get("https://projects.fivethirtyeight.com/soccer-predictions/")
+soup = bs4.BeautifulSoup(main_page.content, "html5lib")
+league_div = soup.find("select", {"id": "leagueselector"})
+leagues_tag = league_div.findAll("option", {"class": "nav-option"})
+for k in leagues_tag:
+    liga = k["value"]
+    print(liga)
+    # one league
+    league_page = requests.get("https://projects.fivethirtyeight.com/soccer-predictions/" + liga + "/").content
+    clubs_tags_page = bs4.BeautifulSoup(league_page, "html5lib")
+    league_logo = clubs_tags_page.find("img", {"class": "logo-img"})
+    # league logo scrape
+    suburl = league_logo["src"]
+    league_logo_url = requests.get("https://projects.fivethirtyeight.com" + suburl)
+    file = open(liga, "wb")
+    file.write(league_logo_url.content)
+    file.close()
+
+    clubs_tags = clubs_tags_page.find("div", {"id": "forecast-table-wrapper"}).find("tbody")
+    for i in clubs_tags:
+        logo_url = i.find("img")["src"]
+        logo = requests.get(logo_url)
+        name = i["data-str"]
+        if "/" in name:
+            print(name)
+            print(logo_url)
+            print(liga)
+            continue
+        file = open(name, "wb")
+        file.write(logo.content)
+        file.close()
+
+"""
