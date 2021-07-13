@@ -2,9 +2,7 @@
     @section("content")
 
     <script>
-
         $(document).ready(function() {
-
             document.getElementById("wrap").addEventListener("scroll", function(){
            var translate = "translateY(-1px)";
            this.querySelector("thead").style.transform = translate;
@@ -15,10 +13,7 @@
                 var spl = date[x].innerText.split("-");
                 var result = spl[2] + "." + spl[1];
                 date[x].innerText = result;
-
-
             }
-
      });
     </script>
 
@@ -27,7 +22,17 @@
                 <thead>
                     <tr>
                         <th class="match d-none d-md-table-cell font-weight-light h5 pb-1"
-                        style="width: 43%"><span class="ml-2">Match</span></th>
+                        style="width: 43%"><span class="ml-2">Match | </span>
+                        <div class="dropdown d-inline">
+                            <span class="dropdown-toggle" id="drpdwn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="cursor: pointer;">Filter</span>
+                            <div class="dropdown-menu dropdown-content" aria-labelledby="drpdwn">
+                                    <button class="dropdown-item" onclick="content_filter('2')">2 hours</button>
+                                    <button class="dropdown-item" onclick="content_filter('4')">4 hours</button>
+                                    <button class="dropdown-item" onclick="content_filter('24')">today</button>
+                                    <button class="dropdown-item" onclick="content_filter('0')">all</button>
+                            </div>
+                        </div>
+                        </th>
                         <!--<th class="match align-middle p-2 pl-2 p-md-3 font-weight-light h4" style="width: 31%">Match</th>
                         <th class="league align-middle d-none d-sm-table-cell font-weight-light h4" style="width: 5%">Leag.</th>-->
                         <th class="rate text-center pb-1 font-weight-light h5" style="width: 19%">1</th>

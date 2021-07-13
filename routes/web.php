@@ -19,6 +19,10 @@ header('Access-Control-Allow-Headers:  Content-Type, X-Auth-Token, Origin, Autho
 
 Route::get('/',"MatchController@home")->name("home");
 
+Route::get('/succ', function () {
+    return view('success_reg');
+});
+
 Route::get('/login', "MatchController@login")->name("login");
 
 Route::get('/blog', "MatchController@blog")->name("blog");

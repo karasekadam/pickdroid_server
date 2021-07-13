@@ -131,6 +131,11 @@ a#log {
     text-overflow: ellipsis;
 }
 
+.dropdown-item:active {
+    background-color: #F2F2F2;
+    color: black;
+}
+
 .drop_item:hover {
 }
 

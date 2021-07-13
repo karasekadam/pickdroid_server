@@ -207,7 +207,7 @@
                             </a>
                         </div>
                         <div class="col-xl-2 col-lg-2 col-md-1">
-                            <div class="dropdown">
+                            <!--<div class="dropdown">
                                 <div onclick="" class="dropdown-toggle" id="drpdwn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: white; cursor: pointer;">Filter</div>
                                 <div class="dropdown-menu dropdown-content" aria-labelledby="drpdwn">
                                     <button class="dropdown-item" onclick="content_filter('2')">2 hours</button>
@@ -215,7 +215,7 @@
                                     <button class="dropdown-item" onclick="content_filter('24')">today</button>
                                     <button class="dropdown-item" onclick="content_filter('0')">all</button>
                                 </div>
-                            </div>
+                            </div>-->
                         </div>
                         <div class="col-xl-4 col-lg-6 col-md-4">
                             
