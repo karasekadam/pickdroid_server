@@ -90,8 +90,6 @@ Route::post("/country_fill", "mainControl@country_fill");
 
 Route::post("/logout", "mainControl@logout");
 
-//Route::get('/{sport}/{league}',"App\Http\Controllers\MatchController@league");
-
 // cors error handler píčovina
 Route::middleware(['cors'])->group(function () {
     Route::post('/hogehoge', 'Controller@hogehoge');

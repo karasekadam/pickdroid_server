@@ -1,40 +1,24 @@
 @extends("layouts.layout")
     @section("content")
-
-    <script>
-        $(document).ready(function() {
-            document.getElementById("wrap").addEventListener("scroll", function(){
-           var translate = "translateY(-1px)";
-           this.querySelector("thead").style.transform = translate;
-            });
-
-            var date = document.getElementsByClassName("match_date");
-            for (var x = 0; x < date.length; x++) {
-                var spl = date[x].innerText.split("-");
-                var result = spl[2] + "." + spl[1];
-                date[x].innerText = result;
-            }
-     });
-    </script>
-
-        <div id="wrap" style="height: 90vh; overflow-x: hidden; overflow-y: auto">
-            <table class="table" style="background-color: #f7f7f7">
-                <thead>
-                    <tr>
-                        <th class="match d-none d-md-table-cell font-weight-light h5 pb-1"
-                        style="width: 43%"><span class="ml-2">Match | </span>
-                        <div class="dropdown d-inline">
-                            <span class="dropdown-toggle" id="drpdwn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="cursor: pointer;">Filter</span>
-                            <div class="dropdown-menu dropdown-content" aria-labelledby="drpdwn">
-                                    <button class="dropdown-item" onclick="content_filter('2')">2 hours</button>
-                                    <button class="dropdown-item" onclick="content_filter('4')">4 hours</button>
-                                    <button class="dropdown-item" onclick="content_filter('24')">today</button>
-                                    <button class="dropdown-item" onclick="content_filter('0')">all</button>
-                            </div>
-                        </div>
-                        </th>
-                        <!--<th class="match align-middle p-2 pl-2 p-md-3 font-weight-light h4" style="width: 31%">Match</th>
-                        <th class="league align-middle d-none d-sm-table-cell font-weight-light h4" style="width: 5%">Leag.</th>-->
+        <script type="text/javascript" src="js/home.js"></script>
+                <div id="wrap" style="height: 90vh; overflow-x: hidden; overflow-y: auto">
+                    <table class="table" style="background-color: #f7f7f7">
+                        <thead>
+                            <tr>
+                                <th class="match d-none d-md-table-cell font-weight-light h5 pb-1"
+                                style="width: 43%"><span class="ml-2">Match | </span>
+                                <div class="dropdown d-inline">
+                                    <span class="dropdown-toggle" id="drpdwn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="cursor: pointer;">Filter</span>
+                                    <div class="dropdown-menu dropdown-content" aria-labelledby="drpdwn">
+                                            <button class="dropdown-item" onclick="content_filter('2')">2 hours</button>
+                                            <button class="dropdown-item" onclick="content_filter('4')">4 hours</button>
+                                            <button class="dropdown-item" onclick="content_filter('24')">today</button>
+                                            <button class="dropdown-item" onclick="content_filter('0')">all</button>
+                                    </div>
+                                </div>
+                                </th>
+                                <!--<th class="match align-middle p-2 pl-2 p-md-3 font-weight-light h4" style="width: 31%">Match</th>
+                                <th class="league align-middle d-none d-sm-table-cell font-weight-light h4" style="width: 5%">Leag.</th>-->
                         <th class="rate text-center pb-1 font-weight-light h5" style="width: 19%">1</th>
                         <th class="rate text-center pb-1 font-weight-light h5" style="width: 19%">X</th>
                         <th class="rate text-center pb-1 font-weight-light h5" style="width: 19%">2</th>
@@ -43,7 +27,6 @@
                 <tbody>
                 @foreach($matches as $match)
                     <tr>
-                        
                         @php
                         {{
                             $logo_title1 = str_replace("/", "-", $match->team1);
@@ -61,7 +44,7 @@
                         @else
                             {{$match->team2}}<br>
                         @endif
-                        <span class="match_date pl-1" style="font-size: 85%">{{$match->date}}</span><span style="font-size: 85%">, 11:11</span> 
+                        <span class="match_date pl-1" style="font-size: 85%">{{$match->date}}</span><span style="font-size: 85%">, 11:11</span>
                             @if (is_file('img/logo/' . $match->league . '.png'))
                             <img src="img/logo/{{$match->league}}.png" style="width: 15px; height: 15px">
                             @endif

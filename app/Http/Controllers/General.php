@@ -12,26 +12,7 @@ use Illuminate\Support\Facades\DB;
 
 class General extends Controller
 {
-    /* vkládání lig do tabulky
-        $ligy = Matches::select("league")->get();
-        foreach ($ligy as $liga) {
-            $check = Leagues::where("name_538", $liga->league)->get();
-            if (!($check->first())) {
-
-                $league = new Leagues();
-                $league->sport = "Football";
-                $league->country = "Default";
-                $league->name_538 = $liga->league;
-                $league->name_fortuna = "-";
-                $league->save();
-
-            }
-
-        }*/
-
-
     public function getMatches(Request $data) {
-        // $sport = request("sport");   nešlo mi to použít jako parametr místo Matches, tak buď na to přijdu, nebo tam budou ify, když nebude moc sportů
         $league = request("league");
         $id = request("id");
         $search = request("search");    // při kliku na search hodí na domovskou s touto proměnou
